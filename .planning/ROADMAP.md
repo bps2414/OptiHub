@@ -12,7 +12,7 @@ OptiHub's MVP is built in 9 phases following a dependency-driven order: foundati
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & App Shell** - Tauri + React scaffold, premium dark theme, sidebar navigation
+- [x] **Phase 1: Foundation & App Shell** - Tauri + React scaffold, premium dark theme, bilingual sidebar shell, and IPC foundation
 - [ ] **Phase 2: Hardware Detection** - CPU, GPU, RAM, VRAM, monitor detection with manual overrides
 - [ ] **Phase 3: Game Detection** - Steam library parsing, manual registration, game library management
 - [ ] **Phase 4: Game Library UI & Metadata** - Game library views, detail pages, Steam metadata, cover art
@@ -27,7 +27,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ### Phase 1: Foundation & App Shell
 **Goal**: Establish the Tauri + React project with premium dark UI, sidebar navigation (including Credits/Licenses placeholder), and all IPC/async patterns that downstream phases depend on
 **Depends on**: Nothing (first phase)
-**Requirements**: UIUX-01, UIUX-02, UIUX-04
+**Requirements**: UIUX-01, UIUX-02, UIUX-04, UIUX-05
 **UI hint**: yes
 **Success Criteria** (what must be TRUE):
   1. Tauri app launches on Windows with React frontend rendering in WebView2
@@ -36,12 +36,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Credits/Licenses route exists as a placeholder page reflecting compliance intent from the start
   5. All interactive elements have clear hover/focus states
   6. IPC bridge works — React can invoke a Rust command and receive a response
+  7. App shell supports English and Brazilian Portuguese with saved preference override plus locale-based default fallback
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Tauri + React + Tailwind project scaffold with TypeScript and Vite
-- [ ] 01-02: Premium dark theme design system, sidebar layout, routing (all routes including Credits placeholder)
-- [ ] 01-03: IPC foundation — Rust command pattern, error handling, serde conventions
+- [x] 01-01: Tauri + React + Tailwind project scaffold with TypeScript and Vite
+- [x] 01-02: Premium dark theme design system, sidebar layout, routing (all routes including Credits placeholder)
+- [x] 01-03: IPC foundation — Rust command pattern, error handling, serde conventions
 
 ### Phase 2: Hardware Detection
 **Goal**: Detect CPU, GPU, RAM, VRAM, and monitor specs via Rust backend, display on diagnostics page with manual override support
@@ -182,7 +183,7 @@ Note: Phases 2, 3, and 5 all depend only on Phase 1 and can potentially run in p
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & App Shell | 0/3 | Not started | - |
+| 1. Foundation & App Shell | 3/3 | Complete | 2026-04-03 |
 | 2. Hardware Detection | 0/2 | Not started | - |
 | 3. Game Detection | 0/2 | Not started | - |
 | 4. Game Library UI & Metadata | 0/2 | Not started | - |

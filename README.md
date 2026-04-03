@@ -17,6 +17,7 @@ OptiHub detects your installed games and PC hardware, recommends the best optimi
 
 ## Features (Roadmap)
 
+- Desktop shell with premium dark sidebar navigation, EN + PT-BR language support, and a live backend health indicator
 - 🎮 **Game Detection** — Automatically detects Steam library and installed games
 - 🖥️ **Hardware Profiling** — CPU, GPU, RAM detection for personalized recommendations
 - 🛠️ **Tool Recommendations** — Per-game optimization tool suggestions with risk levels (safe / limited / experimental)
@@ -62,7 +63,7 @@ pnpm tauri build
 
 ## Project Status
 
-Currently in active development — **Phase 01: Foundation App Shell** in progress.
+Currently in active development — **Phase 01: Foundation App Shell** is complete, including the bilingual shell foundation (English + Brazilian Portuguese). Next up: **Phase 02: Hardware Detection**.
 
 See [`.planning/`](.planning/) for the roadmap and phase plans.
 

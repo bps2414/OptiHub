@@ -12,7 +12,8 @@ The user can optimize any detected game with one guided flow — see what tool t
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Premium dark UI with sidebar navigation, focus/hover states, and bilingual shell support (English + Brazilian Portuguese)
+  Validated in Phase 1: Foundation & App Shell
 
 ### Active
 
@@ -31,7 +32,6 @@ The user can optimize any detected game with one guided flow — see what tool t
 - [ ] Integrate Special K (Swiss Army tool for PC games)
 - [ ] Integrate PCGamingWiki as compatibility/fix data source
 - [ ] Credits & Licenses screen listing all tools, authors, sources, and licenses
-- [ ] Premium dark UI with sidebar navigation (Home, Library, Games, Optimizations, Tools, Presets, Diagnostics, Settings, Credits)
 - [ ] Compliance policy: no redistribution, proper attribution, license documentation for all integrated tools
 
 ### Out of Scope
@@ -91,7 +91,8 @@ The user can optimize any detected game with one guided flow — see what tool t
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Tauri over Electron | Smaller binary, better Windows integration, Rust backend for system access | — Pending |
-| React + Tailwind for frontend | User preference, large ecosystem, rapid UI development | — Pending |
+| React + Tailwind for frontend | User preference, large ecosystem, rapid UI development | ✓ Phase 1 scaffolded and verified |
+| Lightweight in-repo i18n foundation | Keep localization offline-first and simple while blocking new hardcoded shell strings | ✓ Phase 1 bilingual shell gap closed |
 | Steam as primary game source | Largest PC game platform, well-documented library structure | — Pending |
 | No Magpie integration | Explicit project owner decision | ✓ Good |
 | Special K replaces Magpie role | Broader functionality, open-source, active development | — Pending |
@@ -130,5 +131,4 @@ After any phase completion or task that changes user-facing functionality:
 See `.planning/CONVENTIONS.md` for the full README sync policy and checklist.
 
 ---
-*Last updated: 2026-04-03 — added CONVENTIONS.md, README sync policy*
-
+*Last updated: 2026-04-03 — Phase 1 bilingual shell gap closed and docs synced*

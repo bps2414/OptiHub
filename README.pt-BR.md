@@ -91,6 +91,14 @@ Os parâmetros de cada preset se adaptam automaticamente ao hardware detectado.
 
 ---
 
+### Shell desktop premium
+- Tema dark premium com barra lateral fixa e todos os destinos principais do app
+- Shell bilingue com suporte a English + Português (Brasil), preferencia persistida e fallback por locale
+- Card de saude do backend na Home validando a comunicacao React <-> Rust
+- Pagina inicial de Creditos & Licencas preparada desde o comeco do produto
+
+---
+
 ## O que o OptiHub *não* vai fazer
 
 Por design e por princípio, o OptiHub **nunca irá**:
@@ -171,7 +179,7 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 
 | Fase | Status |
 |------|--------|
-| 1. Foundation & App Shell | 🔄 Em progresso |
+| 1. Foundation & App Shell | ✅ Completa |
 | 2. Detecção de Hardware | ⏳ Planejada |
 | 3. Detecção de Jogos | ⏳ Planejada |
 | 4. UI da Biblioteca | ⏳ Planejada |
@@ -180,6 +188,8 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 | 7. Sistema de Presets | ⏳ Planejada |
 | 8. Aplicar & Restaurar | ⏳ Planejada |
 | 9. Compliance & Polish | ⏳ Planejada |
+
+Status atual: Fase 1 concluida, incluindo a base bilingue do shell (English + Portugues do Brasil). Proxima etapa: Fase 2 - Deteccao de Hardware.
 
 ---
 

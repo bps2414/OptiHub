@@ -65,9 +65,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### UI/UX
 
-- [ ] **UIUX-01**: App has a premium dark theme with sidebar navigation
-- [ ] **UIUX-02**: Sidebar includes: Home, Library, Games, Optimizations, Tools, Presets, Diagnostics, Settings, Credits
-- [ ] **UIUX-04**: All interactive elements have clear hover/focus states
+- [x] **UIUX-01**: App has a premium dark theme with sidebar navigation
+- [x] **UIUX-02**: Sidebar includes: Home, Library, Games, Optimizations, Tools, Presets, Diagnostics, Settings, Credits
+- [x] **UIUX-05**: App shell supports English and Brazilian Portuguese with a persisted language choice and locale-based default
+- [x] **UIUX-04**: All interactive elements have clear hover/focus states
 
 ### Compliance
 
@@ -124,9 +125,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| UIUX-01 | Phase 1 | Pending |
-| UIUX-02 | Phase 1 | Pending |
-| UIUX-04 | Phase 1 | Pending |
+| UIUX-01 | Phase 1 | Complete |
+| UIUX-02 | Phase 1 | Complete |
+| UIUX-05 | Phase 1 | Complete |
+| UIUX-04 | Phase 1 | Complete |
 | HDWR-01 | Phase 2 | Pending |
 | HDWR-02 | Phase 2 | Pending |
 | HDWR-03 | Phase 2 | Pending |
@@ -168,8 +170,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COMP-04 | Phase 9 | Pending |
 
 **Coverage:**
-- v1 requirements: 37 total
-- Mapped to phases: 37
+- v1 requirements: 38 total
+- Mapped to phases: 38
 - Unmapped: 0 ✓
 
 ---
