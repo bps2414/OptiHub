@@ -124,12 +124,53 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| *(populated during roadmap creation)* | | |
+| UIUX-01 | Phase 1 | Pending |
+| UIUX-02 | Phase 1 | Pending |
+| UIUX-04 | Phase 1 | Pending |
+| HDWR-01 | Phase 2 | Pending |
+| HDWR-02 | Phase 2 | Pending |
+| HDWR-03 | Phase 2 | Pending |
+| HDWR-04 | Phase 2 | Pending |
+| HDWR-05 | Phase 2 | Pending |
+| HDWR-06 | Phase 2 | Pending |
+| GAME-01 | Phase 3 | Pending |
+| GAME-02 | Phase 3 | Pending |
+| GAME-04 | Phase 3 | Pending |
+| GAME-05 | Phase 3 | Pending |
+| GAME-06 | Phase 3 | Pending |
+| GAME-03 | Phase 4 | Pending |
+| META-01 | Phase 4 | Pending |
+| META-02 | Phase 4 | Pending |
+| TOOL-01 | Phase 5 | Pending |
+| TOOL-02 | Phase 5 | Pending |
+| TOOL-03 | Phase 5 | Pending |
+| TOOL-04 | Phase 5 | Pending |
+| TOOL-05 | Phase 5 | Pending |
+| TOOL-06 | Phase 5 | Pending |
+| RECO-01 | Phase 6 | Pending |
+| RECO-02 | Phase 6 | Pending |
+| RECO-03 | Phase 6 | Pending |
+| RECO-04 | Phase 6 | Pending |
+| RECO-05 | Phase 6 | Pending |
+| PRES-01 | Phase 7 | Pending |
+| PRES-02 | Phase 7 | Pending |
+| PRES-03 | Phase 7 | Pending |
+| APPL-01 | Phase 8 | Pending |
+| APPL-02 | Phase 8 | Pending |
+| APPL-03 | Phase 8 | Pending |
+| APPL-04 | Phase 8 | Pending |
+| APPL-05 | Phase 8 | Pending |
+| APPL-06 | Phase 8 | Pending |
+| APPL-07 | Phase 8 | Pending |
+| COMP-01 | Phase 9 | Pending |
+| COMP-02 | Phase 9 | Pending |
+| COMP-03 | Phase 9 | Pending |
+| COMP-04 | Phase 9 | Pending |
 
 **Coverage:**
 - v1 requirements: 37 total
-- Mapped to phases: 0
-- Unmapped: 37 ⚠️
+- Mapped to phases: 37
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-03*
