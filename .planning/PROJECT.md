@@ -117,5 +117,18 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+**README Sync (mandatory after every phase):**
+
+Both `README.md` and `README.pt-BR.md` must always reflect the actual project state.
+
+After any phase completion or task that changes user-facing functionality:
+1. Update the phase status table in both READMEs
+2. Expand the features section if a new end-user feature was delivered
+3. Commit: `git add README.md README.pt-BR.md && git commit -m "docs: sync READMEs with phase {N} completion"`
+4. Push: `git push origin master`
+
+See `.planning/CONVENTIONS.md` for the full README sync policy and checklist.
+
 ---
-*Last updated: 2026-04-02 after initialization*
+*Last updated: 2026-04-03 — added CONVENTIONS.md, README sync policy*
+
