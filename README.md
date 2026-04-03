@@ -7,6 +7,8 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-in%20development-orange)
 
+**[🇧🇷 Leia em Português](README.pt-BR.md)**
+
 ## What is OptiHub?
 
 OptiHub detects your installed games and PC hardware, recommends the best optimization tools per game, offers automatic presets (Quality / Balanced / Performance), and applies reversible configurations — all with your explicit confirmation. No more bouncing between a dozen tools and guides.
