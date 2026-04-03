@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ## Phase Details
 
 ### Phase 1: Foundation & App Shell
-**Goal**: Establish the Tauri + React project with premium dark UI, sidebar navigation, and all IPC/async patterns that downstream phases depend on
+**Goal**: Establish the Tauri + React project with premium dark UI, sidebar navigation (including Credits/Licenses placeholder), and all IPC/async patterns that downstream phases depend on
 **Depends on**: Nothing (first phase)
 **Requirements**: UIUX-01, UIUX-02, UIUX-04
 **UI hint**: yes
@@ -33,13 +33,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. Tauri app launches on Windows with React frontend rendering in WebView2
   2. Premium dark theme is applied with sidebar navigation showing all planned sections
   3. Sidebar navigation routes work (Home, Library, Games, Optimizations, Tools, Presets, Diagnostics, Settings, Credits)
-  4. All interactive elements have clear hover/focus states
-  5. IPC bridge works — React can invoke a Rust command and receive a response
+  4. Credits/Licenses route exists as a placeholder page reflecting compliance intent from the start
+  5. All interactive elements have clear hover/focus states
+  6. IPC bridge works — React can invoke a Rust command and receive a response
 **Plans**: 3 plans
 
 Plans:
 - [ ] 01-01: Tauri + React + Tailwind project scaffold with TypeScript and Vite
-- [ ] 01-02: Premium dark theme design system, sidebar layout, routing
+- [ ] 01-02: Premium dark theme design system, sidebar layout, routing (all routes including Credits placeholder)
 - [ ] 01-03: IPC foundation — Rust command pattern, error handling, serde conventions
 
 ### Phase 2: Hardware Detection
@@ -156,7 +157,7 @@ Plans:
 - [ ] 08-03: Restore system and optimization history UI
 
 ### Phase 9: Compliance, Credits & Polish
-**Goal**: Credits/licenses screen, compliance policy documentation, third-party tool attribution, and final UX polish across the app
+**Goal**: Populate the Credits/Licenses placeholder (from Phase 1) with full content, implement compliance policy documentation, third-party tool attribution, and complete final UX polish across the app
 **Depends on**: Phase 8
 **Requirements**: COMP-01, COMP-02, COMP-03, COMP-04
 **UI hint**: yes
