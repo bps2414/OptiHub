@@ -36,6 +36,17 @@ export interface HardwareSnapshot {
 }
 
 export type GameSource = 'steam' | 'manual'
+export type MetadataCacheStatus = 'missing' | 'fallback' | 'cached'
+
+export interface GameMetadataSummary {
+  libraryPortraitAssetUrl: string | null
+  detailHeroAssetUrl: string | null
+  shortDescription: string | null
+  platforms: string[]
+  cacheStatus: MetadataCacheStatus
+  lastUpdatedAt: string | null
+  sharedSteamAppId: number | null
+}
 
 export interface GameLibraryEntry {
   id: string
@@ -48,12 +59,20 @@ export interface GameLibraryEntry {
   removable: boolean
   userAdded: boolean
   lastSeenAt: string | null
+  metadata: GameMetadataSummary
 }
 
 export interface GameLibrarySnapshot {
   entries: GameLibraryEntry[]
   steamLibraryPaths: string[]
   scannedAt: string
+  pendingMetadataRefreshAppIds: number[]
+}
+
+export interface GameDetailSnapshot {
+  entry: GameLibraryEntry
+  installSizeBytes: number | null
+  relatedEntries: GameLibraryEntry[]
 }
 
 export interface ManualGameRegistrationInput {

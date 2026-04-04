@@ -59,6 +59,21 @@ export interface MessageCatalog {
         refreshing: string
         pickerOpening: string
       }
+      controls: {
+        searchLabel: string
+        searchPlaceholder: string
+        sourceLabel: string
+        sourceAll: string
+        sourceSteam: string
+        sourceManual: string
+        sortLabel: string
+        sortNameAsc: string
+        sortNameDesc: string
+        sortRecent: string
+        viewLabel: string
+        viewGrid: string
+        viewList: string
+      }
       table: {
         name: string
         source: string
@@ -71,6 +86,10 @@ export interface MessageCatalog {
         addedManually: string
         linkedToSteamDetection: string
       }
+      browser: {
+        openDetails: string
+        noMatches: string
+      }
       form: {
         displayName: string
         executable: string
@@ -82,7 +101,34 @@ export interface MessageCatalog {
       pickerFailed: string
     }
     games: PageCopy & {
-      managementHint: string
+      backToLibrary: string
+      emptySelection: string
+      loading: string
+      descriptionFallback: string
+      sourceSteam: string
+      sourceManual: string
+      openRelated: string
+      noRelatedEntries: string
+      sections: {
+        identity: string
+        metadata: string
+        relatedEntries: string
+      }
+      fields: {
+        installPath: string
+        installSize: string
+        platform: string
+        source: string
+        cacheStatus: string
+        lastUpdated: string
+        sharedMetadata: string
+      }
+      metadata: {
+        cached: string
+        fallback: string
+        missing: string
+        notAvailable: string
+      }
     }
     optimizations: PageCopy
     tools: PageCopy
@@ -184,12 +230,27 @@ export const messages: Record<Locale, MessageCatalog> = {
       library: {
         eyebrow: 'Library',
         title: 'Game Library',
-        subtitle: 'Your detected and added games will appear here',
+        subtitle: 'Browse detected and manual entries and open detail inside the same library flow',
         toolbar: {
           refresh: 'Refresh library',
           addGame: 'Add game',
           refreshing: 'Refreshing library...',
           pickerOpening: 'Opening executable picker...',
+        },
+        controls: {
+          searchLabel: 'Search',
+          searchPlaceholder: 'Search by name or path',
+          sourceLabel: 'Source',
+          sourceAll: 'All sources',
+          sourceSteam: 'Steam only',
+          sourceManual: 'Manual only',
+          sortLabel: 'Sort',
+          sortNameAsc: 'Name (A-Z)',
+          sortNameDesc: 'Name (Z-A)',
+          sortRecent: 'Recently seen',
+          viewLabel: 'View',
+          viewGrid: 'Grid',
+          viewList: 'List',
         },
         table: {
           name: 'Name',
@@ -203,6 +264,10 @@ export const messages: Record<Locale, MessageCatalog> = {
           addedManually: 'Added manually',
           linkedToSteamDetection: 'Linked to Steam detection',
         },
+        browser: {
+          openDetails: 'Open details',
+          noMatches: 'No games match the current search or filters',
+        },
         form: {
           displayName: 'Display name',
           executable: 'Executable',
@@ -215,10 +280,36 @@ export const messages: Record<Locale, MessageCatalog> = {
       },
       games: {
         eyebrow: 'Games',
-        title: 'Games',
-        subtitle: 'Use Library to manage detected and manually added games in Phase 3',
-        managementHint:
-          'The management-first game flow lives in Library for this phase. Rich metadata views stay in Phase 4.',
+        title: 'Game Detail',
+        subtitle: 'Review metadata, install context, and provenance for a selected game',
+        backToLibrary: 'Back to Library',
+        emptySelection: 'Choose a game from Library to open its detail view.',
+        loading: 'Loading game detail...',
+        descriptionFallback: 'No cached description is available for this game yet.',
+        sourceSteam: 'Steam',
+        sourceManual: 'Manual',
+        openRelated: 'Open entry',
+        noRelatedEntries: 'No related entries share metadata with this game right now.',
+        sections: {
+          identity: 'Identity',
+          metadata: 'Metadata',
+          relatedEntries: 'Related Entries',
+        },
+        fields: {
+          installPath: 'Install path',
+          installSize: 'Install size',
+          platform: 'Platform',
+          source: 'Source',
+          cacheStatus: 'Cache status',
+          lastUpdated: 'Last updated',
+          sharedMetadata: 'Shared metadata app ID',
+        },
+        metadata: {
+          cached: 'Cached',
+          fallback: 'Fallback',
+          missing: 'Missing',
+          notAvailable: 'Not available',
+        },
       },
       optimizations: {
         eyebrow: 'Optimizations',
@@ -343,12 +434,27 @@ export const messages: Record<Locale, MessageCatalog> = {
       library: {
         eyebrow: 'Biblioteca',
         title: 'Biblioteca de Jogos',
-        subtitle: 'Seus jogos detectados e adicionados aparecerão aqui',
+        subtitle: 'Explore entradas detectadas e manuais e abra o detalhe dentro do mesmo fluxo da biblioteca',
         toolbar: {
           refresh: 'Atualizar biblioteca',
           addGame: 'Adicionar jogo',
           refreshing: 'Atualizando biblioteca...',
           pickerOpening: 'Abrindo seletor de executável...',
+        },
+        controls: {
+          searchLabel: 'Busca',
+          searchPlaceholder: 'Busque por nome ou caminho',
+          sourceLabel: 'Origem',
+          sourceAll: 'Todas as origens',
+          sourceSteam: 'Apenas Steam',
+          sourceManual: 'Apenas manual',
+          sortLabel: 'Ordenação',
+          sortNameAsc: 'Nome (A-Z)',
+          sortNameDesc: 'Nome (Z-A)',
+          sortRecent: 'Vistos recentemente',
+          viewLabel: 'Visualização',
+          viewGrid: 'Grid',
+          viewList: 'Lista',
         },
         table: {
           name: 'Nome',
@@ -362,6 +468,10 @@ export const messages: Record<Locale, MessageCatalog> = {
           addedManually: 'Adicionado manualmente',
           linkedToSteamDetection: 'Vinculado à detecção da Steam',
         },
+        browser: {
+          openDetails: 'Abrir detalhe',
+          noMatches: 'Nenhum jogo corresponde à busca ou aos filtros atuais',
+        },
         form: {
           displayName: 'Nome de exibição',
           executable: 'Executável',
@@ -374,10 +484,36 @@ export const messages: Record<Locale, MessageCatalog> = {
       },
       games: {
         eyebrow: 'Jogos',
-        title: 'Jogos',
-        subtitle: 'Use a Biblioteca para gerenciar jogos detectados e adicionados manualmente na Fase 3',
-        managementHint:
-          'O fluxo principal de gestão fica em Biblioteca nesta fase. As views ricas com metadata ficam para a Fase 4.',
+        title: 'Detalhe do Jogo',
+        subtitle: 'Revise metadata, contexto de instalação e proveniência do jogo selecionado',
+        backToLibrary: 'Voltar para Biblioteca',
+        emptySelection: 'Escolha um jogo na Biblioteca para abrir a visão de detalhe.',
+        loading: 'Carregando detalhe do jogo...',
+        descriptionFallback: 'Ainda não existe uma descrição em cache para este jogo.',
+        sourceSteam: 'Steam',
+        sourceManual: 'Manual',
+        openRelated: 'Abrir entrada',
+        noRelatedEntries: 'Nenhuma outra entrada compartilha metadata com este jogo agora.',
+        sections: {
+          identity: 'Identidade',
+          metadata: 'Metadata',
+          relatedEntries: 'Entradas Relacionadas',
+        },
+        fields: {
+          installPath: 'Caminho de instalação',
+          installSize: 'Tamanho instalado',
+          platform: 'Plataforma',
+          source: 'Origem',
+          cacheStatus: 'Status do cache',
+          lastUpdated: 'Última atualização',
+          sharedMetadata: 'App ID de metadata compartilhada',
+        },
+        metadata: {
+          cached: 'Em cache',
+          fallback: 'Fallback',
+          missing: 'Ausente',
+          notAvailable: 'Não disponível',
+        },
       },
       optimizations: {
         eyebrow: 'Otimizações',

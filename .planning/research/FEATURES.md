@@ -2,7 +2,7 @@
 
 ## Domain: PC Game Optimization Hub
 
-### Table Stakes (Must-Have — Users Expect These)
+### Table Stakes (Must-Have - Users Expect These)
 
 | Feature | Complexity | Notes |
 |---------|-----------|-------|
@@ -11,7 +11,7 @@
 | Game detail view with metadata | Medium | Cover art, description, platform info from Steam/SteamDB |
 | Preset system (Quality/Balanced/Performance) | Medium | Per-game and per-tool preset configurations |
 | Apply/undo mechanism | High | File backup before modification, restore on demand |
-| Tool recommendation per game | High | Rules engine mapping game → compatible tools → confidence |
+| Tool recommendation per game | High | Rules engine mapping game -> compatible tools -> confidence |
 | Settings/preferences | Low | App-level settings (theme, language, paths) |
 | Credits & licenses screen | Low | Static page listing all integrated projects |
 
@@ -20,8 +20,8 @@
 | Feature | Complexity | Notes |
 |---------|-----------|-------|
 | Guided optimization flow (wizard-style) | Medium | Step-by-step with explanations, not just a "Apply" button |
-| Risk classification (Safe/Limited/Experimental) | Medium | Trust signal — builds confidence in non-technical users |
-| Tool integration (OptiScaler, Special K, LS) | High | Detect installations, configure, prepare DLL placements |
+| Risk classification (Safe/Limited/Experimental) | Medium | Trust signal - builds confidence in non-technical users |
+| Tool integration (OptiScaler, Special K, LS) | High | Track official/local sources, per-game deployments, release channels, and legal boundaries |
 | PCGamingWiki data integration | High | Cargo API queries, robust wikitext parsing |
 | Contextual explanations ("why this tool?") | Medium | Natural language rationale for each recommendation |
 | Batch diagnostics view | Medium | System overview showing hardware + all detected tools |
@@ -45,20 +45,20 @@
 ### Feature Dependencies
 
 ```
-Game Detection ──> Game Detail View ──> Tool Recommendation ──> Preset Selection ──> Apply Flow
-     │                   │                      │                      │
-     └── Hardware Detection                     └── Tool Detection     └── Backup/Restore
-                                                     │
-                                                     └── PCGamingWiki Data
+Game Detection --> Game Detail View --> Tool Recommendation --> Preset Selection --> Apply Flow
+     |                   |                      |                      |
+     +-- Hardware Detection                     +-- Tool Integration   +-- Backup/Restore
+                                                     |
+                                                     +-- PCGamingWiki Data
 ```
 
 ### Market Context
 
 **Existing tools in this space:**
-- **GeForce Experience / AMD Adrenalin** — GPU vendor-specific, limited to their own optimization
-- **Razer Cortex** — Game booster, not deep optimization
-- **Afterburner** — Monitoring/OC only, not game-specific optimization
-- **Individual tools** — OptiScaler, Special K, Lossless Scaling etc. work independently
+- **GeForce Experience / AMD Adrenalin** - GPU vendor-specific, limited to their own optimization
+- **Razer Cortex** - Game booster, not deep optimization
+- **Afterburner** - Monitoring/OC only, not game-specific optimization
+- **Individual tools** - OptiScaler, Special K, Lossless Scaling etc. work independently
 
 **Gap OptiHub fills:** No tool unifies detection + recommendation + integration + presets + safety classification in one place. The closest analogy is a "package manager for game optimizations."
 

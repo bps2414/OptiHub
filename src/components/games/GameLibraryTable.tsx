@@ -1,56 +1,113 @@
+import {
+  formatPlatformSummary,
+  getGameCoverFallback,
+  resolveLibraryArtwork,
+  type GameLibraryViewMode,
+} from '../../lib/gameLibrary'
 import { useI18n } from '../../i18n/useI18n'
 import type { GameLibraryEntry } from '../../types/ipc'
 import { GameSourceBadge } from './GameSourceBadge'
 
 interface GameLibraryTableProps {
   entries: GameLibraryEntry[]
+  viewMode: GameLibraryViewMode
+  onOpenDetail: (gameId: string) => void
   onRemove: (gameId: string) => void | Promise<void>
+}
+
+function GameArtwork({ entry }: { entry: GameLibraryEntry }) {
+  const fallback = getGameCoverFallback(entry)
+  const artwork = resolveLibraryArtwork(entry)
+
+  return (
+    <div className="game-artwork">
+      {artwork ? (
+        <img
+          alt=""
+          className="game-artwork__image"
+          src={artwork}
+        />
+      ) : (
+        <div className="game-artwork__fallback" aria-hidden="true">
+          {fallback}
+        </div>
+      )}
+      <div className="game-artwork__badge">
+        <GameSourceBadge source={entry.source} />
+      </div>
+    </div>
+  )
 }
 
 export function GameLibraryTable({
   entries,
+  viewMode,
+  onOpenDetail,
   onRemove,
 }: GameLibraryTableProps) {
   const { copy } = useI18n()
   const libraryCopy = copy.pages.library
+  const isGrid = viewMode === 'grid'
 
   return (
-    <section className="page-card game-library-table">
-      <div className="game-library-row game-library-row--header">
-        <span className="game-library-cell">{libraryCopy.table.name}</span>
-        <span className="game-library-cell">{libraryCopy.table.source}</span>
-        <span className="game-library-cell">{libraryCopy.table.installPath}</span>
-        <span className="game-library-cell">{libraryCopy.table.actions}</span>
-      </div>
-
+    <section
+      className={isGrid ? 'game-library-grid' : 'game-library-list'}
+      data-view-mode={viewMode}
+    >
       {entries.map((entry) => (
-        <div className="game-library-row" key={entry.id}>
-          <span className="game-library-cell">{entry.displayName}</span>
-          <span className="game-library-cell">
-            <GameSourceBadge source={entry.source} />
-            <span className="game-source-meta">
-              {entry.source === 'steam'
-                ? libraryCopy.table.detectedViaSteam
-                : entry.relatedSteamAppId !== null
-                  ? libraryCopy.table.linkedToSteamDetection
-                  : libraryCopy.table.addedManually}
-            </span>
-          </span>
-          <span className="game-library-cell">{entry.installDir}</span>
-          <span className="game-library-cell">
-            {entry.removable ? (
+        <article
+          className={isGrid ? 'game-library-card' : 'game-library-list-item'}
+          key={entry.id}
+        >
+          <GameArtwork entry={entry} />
+
+          <div className="game-library-card__body">
+            <div className="game-library-card__heading">
+              <h2 className="game-library-card__title">{entry.displayName}</h2>
+              {!isGrid ? (
+                <span className="game-library-card__platform">
+                  {formatPlatformSummary(entry)}
+                </span>
+              ) : null}
+            </div>
+
+            <div className="game-library-card__meta">
+              {isGrid ? (
+                <span className="game-library-card__platform">
+                  {formatPlatformSummary(entry)}
+                </span>
+              ) : null}
+              <span className="game-library-card__path">{entry.installDir}</span>
+            </div>
+
+            {!isGrid && entry.metadata.shortDescription ? (
+              <p className="game-library-card__description">
+                {entry.metadata.shortDescription}
+              </p>
+            ) : null}
+
+            <div className="game-library-card__actions">
               <button
                 className="form-select"
-                onClick={() => {
-                  void onRemove(entry.id)
-                }}
+                onClick={() => onOpenDetail(entry.id)}
                 type="button"
               >
-                {libraryCopy.table.remove}
+                {libraryCopy.browser.openDetails}
               </button>
-            ) : null}
-          </span>
-        </div>
+              {entry.removable ? (
+                <button
+                  className="form-select"
+                  onClick={() => {
+                    void onRemove(entry.id)
+                  }}
+                  type="button"
+                >
+                  {libraryCopy.table.remove}
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </article>
       ))}
     </section>
   )

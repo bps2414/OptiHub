@@ -4,13 +4,17 @@ use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use keyvalues_serde::from_str_with_key;
-use rusqlite::{Connection, params};
+use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
 use tauri::Manager;
-use winreg::RegKey;
 use winreg::enums::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+use winreg::RegKey;
 
 use crate::errors::AppError;
+use crate::game_metadata::{
+    build_fallback_metadata_summary, load_cached_metadata, metadata_cache_dir,
+    refresh_metadata_cache_for_app_ids, resolve_metadata_summary, GameMetadataSummary,
+};
 
 const MANUAL_REGISTRATION_TABLE: &str = "manual_game_registrations";
 
@@ -34,6 +38,7 @@ pub struct GameLibraryEntry {
     pub removable: bool,
     pub user_added: bool,
     pub last_seen_at: Option<String>,
+    pub metadata: GameMetadataSummary,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -42,6 +47,15 @@ pub struct GameLibrarySnapshot {
     pub entries: Vec<GameLibraryEntry>,
     pub steam_library_paths: Vec<String>,
     pub scanned_at: String,
+    pub pending_metadata_refresh_app_ids: Vec<u32>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GameDetailSnapshot {
+    pub entry: GameLibraryEntry,
+    pub install_size_bytes: Option<u64>,
+    pub related_entries: Vec<GameLibraryEntry>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
@@ -104,6 +118,14 @@ fn normalize_optional_string(value: Option<&str>) -> Option<String> {
         .map(ToOwned::to_owned)
 }
 
+fn default_platforms() -> Vec<String> {
+    vec!["Windows".into()]
+}
+
+fn metadata_key_for_entry(entry: &GameLibraryEntry) -> Option<u32> {
+    entry.steam_app_id.or(entry.related_steam_app_id)
+}
+
 fn now_timestamp() -> String {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -147,8 +169,7 @@ fn derive_install_root_from_executable(executable_path: &Path) -> PathBuf {
             .map(|value| {
                 matches!(
                     value.to_ascii_lowercase().as_str(),
-                    "bin" | "binaries" | "game" | "shipping" | "win64" | "win32" | "x64"
-                        | "x86"
+                    "bin" | "binaries" | "game" | "shipping" | "win64" | "win32" | "x64" | "x86"
                 )
             })
             .unwrap_or(false);
@@ -213,7 +234,9 @@ fn generate_manual_registration_id(normalized_executable_path: &str) -> String {
     )
 }
 
-fn validate_manual_input(input: &ManualGameRegistrationInput) -> Result<(PathBuf, PathBuf), AppError> {
+fn validate_manual_input(
+    input: &ManualGameRegistrationInput,
+) -> Result<(PathBuf, PathBuf), AppError> {
     let executable_path = PathBuf::from(input.executable_path.trim());
     executable_path.parent().ok_or_else(|| {
         AppError::InvalidInput("Manual executable path must have a parent directory".into())
@@ -302,7 +325,9 @@ fn delete_manual_registration(connection: &Connection, game_id: &str) -> Result<
     Ok(())
 }
 
-fn load_manual_registrations(connection: &Connection) -> Result<Vec<ManualGameRegistration>, AppError> {
+fn load_manual_registrations(
+    connection: &Connection,
+) -> Result<Vec<ManualGameRegistration>, AppError> {
     let mut statement = connection
         .prepare(&format!(
             "SELECT
@@ -483,10 +508,7 @@ fn scan_steam_snapshot() -> SteamScanSnapshot {
     }
 }
 
-fn build_steam_entry(
-    steam_entry: &SteamScanEntry,
-    scanned_at: &str,
-) -> GameLibraryEntry {
+fn build_steam_entry(steam_entry: &SteamScanEntry, scanned_at: &str) -> GameLibraryEntry {
     GameLibraryEntry {
         id: format!("steam:{}", steam_entry.app_id),
         display_name: steam_entry.display_name.clone(),
@@ -498,6 +520,7 @@ fn build_steam_entry(
         removable: false,
         user_added: false,
         last_seen_at: Some(scanned_at.to_string()),
+        metadata: build_fallback_metadata_summary(Some(steam_entry.app_id), &default_platforms()),
     }
 }
 
@@ -516,6 +539,7 @@ fn build_manual_entry(
         removable: true,
         user_added: true,
         last_seen_at: Some(registration.updated_at.clone()),
+        metadata: build_fallback_metadata_summary(related_steam_app_id, &default_platforms()),
     }
 }
 
@@ -564,32 +588,300 @@ fn reconcile_library(
         entries,
         steam_library_paths: steam_snapshot.steam_library_paths,
         scanned_at: steam_snapshot.scanned_at,
+        pending_metadata_refresh_app_ids: Vec::new(),
     }
 }
 
-fn load_reconciled_library(database_path: &Path) -> Result<GameLibrarySnapshot, AppError> {
+#[derive(Debug)]
+struct ReconciledLibraryLoad {
+    snapshot: GameLibrarySnapshot,
+    pending_metadata_refresh_app_ids: Vec<u32>,
+}
+
+const EAGER_METADATA_REFRESH_LIMIT: usize = 8;
+
+fn enrich_library_metadata(
+    snapshot: &mut GameLibrarySnapshot,
+    cache_dir: &Path,
+    locale: &str,
+) -> Vec<u32> {
+    let mut pending_refresh_app_ids = BTreeSet::new();
+
+    snapshot.entries = snapshot
+        .entries
+        .iter()
+        .cloned()
+        .map(|mut entry| {
+            let (metadata, pending_refresh) = resolve_metadata_summary(
+                cache_dir,
+                metadata_key_for_entry(&entry),
+                &default_platforms(),
+                locale,
+            );
+            entry.metadata = metadata;
+
+            if let Some(pending_refresh) = pending_refresh {
+                pending_refresh_app_ids.insert(pending_refresh);
+            }
+
+            entry
+        })
+        .collect();
+
+    pending_refresh_app_ids.into_iter().collect()
+}
+
+fn load_reconciled_library(
+    database_path: &Path,
+    cache_dir: &Path,
+    locale: &str,
+) -> Result<ReconciledLibraryLoad, AppError> {
     let connection = open_database(database_path)?;
     ensure_manual_registration_table(&connection)?;
     let manual_registrations = load_manual_registrations(&connection)?;
     let steam_snapshot = scan_steam_snapshot();
+    let mut snapshot = reconcile_library(steam_snapshot, manual_registrations);
+    let pending_metadata_refresh_app_ids =
+        enrich_library_metadata(&mut snapshot, cache_dir, locale);
 
-    Ok(reconcile_library(steam_snapshot, manual_registrations))
+    Ok(ReconciledLibraryLoad {
+        snapshot: GameLibrarySnapshot {
+            pending_metadata_refresh_app_ids: pending_metadata_refresh_app_ids.clone(),
+            ..snapshot
+        },
+        pending_metadata_refresh_app_ids,
+    })
+}
+
+fn load_library_with_eager_metadata_refresh(
+    database_path: &Path,
+    cache_dir: &Path,
+    locale: &str,
+) -> Result<ReconciledLibraryLoad, AppError> {
+    let initial = load_reconciled_library(database_path, cache_dir, locale)?;
+
+    if initial.pending_metadata_refresh_app_ids.is_empty() {
+        return Ok(initial);
+    }
+
+    let eager_ids = initial
+        .pending_metadata_refresh_app_ids
+        .iter()
+        .take(EAGER_METADATA_REFRESH_LIMIT)
+        .copied()
+        .collect::<Vec<_>>();
+
+    if eager_ids.is_empty() {
+        return Ok(initial);
+    }
+
+    let _ = refresh_metadata_cache_for_app_ids(cache_dir, &eager_ids, locale);
+    load_reconciled_library(database_path, cache_dir, locale)
+}
+
+fn queue_background_metadata_refresh(cache_dir: PathBuf, app_ids: Vec<u32>, locale: String) {
+    if app_ids.is_empty() {
+        return;
+    }
+
+    tauri::async_runtime::spawn(async move {
+        let _ = tauri::async_runtime::spawn_blocking(move || {
+            refresh_metadata_cache_for_app_ids(&cache_dir, &app_ids, &locale)
+        })
+        .await;
+    });
+}
+
+fn calculate_directory_size(path: &Path) -> Result<u64, AppError> {
+    let metadata = fs::metadata(path).map_err(|error| AppError::SystemError(error.to_string()))?;
+
+    if metadata.is_file() {
+        return Ok(metadata.len());
+    }
+
+    let mut total = 0_u64;
+    let read_dir = fs::read_dir(path).map_err(|error| AppError::SystemError(error.to_string()))?;
+
+    for entry in read_dir {
+        let entry = entry.map_err(|error| AppError::SystemError(error.to_string()))?;
+        let child_path = entry.path();
+        total = total.saturating_add(calculate_directory_size(&child_path)?);
+    }
+
+    Ok(total)
+}
+
+fn build_game_detail_snapshot(
+    game_id: &str,
+    library: &GameLibrarySnapshot,
+    cache_dir: &Path,
+    locale: &str,
+) -> Result<(GameDetailSnapshot, Option<u32>), AppError> {
+    let index = library
+        .entries
+        .iter()
+        .position(|entry| entry.id == game_id)
+        .ok_or_else(|| AppError::NotFound(format!("Game '{game_id}' was not found")))?;
+    let mut entry = library.entries[index].clone();
+
+    let metadata_key = metadata_key_for_entry(&entry);
+    let mut pending_refresh = None;
+
+    if let Some(steam_app_id) = metadata_key {
+        if !matches!(
+            entry.metadata.cache_status,
+            crate::game_metadata::MetadataCacheStatus::Cached
+        ) {
+            let _ = refresh_metadata_cache_for_app_ids(cache_dir, &[steam_app_id], locale);
+
+            if let Some(cached) = load_cached_metadata(cache_dir, steam_app_id, locale) {
+                entry.metadata = GameMetadataSummary {
+                    library_portrait_asset_url: cached.library_portrait_asset_url.clone(),
+                    detail_hero_asset_url: cached
+                        .detail_hero_asset_url
+                        .clone()
+                        .or_else(|| cached.library_portrait_asset_url.clone()),
+                    short_description: cached.short_description.clone(),
+                    platforms: if cached.platforms.is_empty() {
+                        default_platforms()
+                    } else {
+                        cached.platforms.clone()
+                    },
+                    cache_status: crate::game_metadata::MetadataCacheStatus::Cached,
+                    last_updated_at: Some(cached.fetched_at),
+                    shared_steam_app_id: Some(steam_app_id),
+                };
+            } else {
+                pending_refresh = Some(steam_app_id);
+            }
+        } else if let Some(cached) = load_cached_metadata(cache_dir, steam_app_id, locale) {
+            entry.metadata.last_updated_at = Some(cached.fetched_at);
+        }
+    }
+
+    let related_entries = library
+        .entries
+        .iter()
+        .filter(|candidate| candidate.id != entry.id)
+        .filter(|candidate| match metadata_key {
+            Some(shared_app_id) => metadata_key_for_entry(candidate) == Some(shared_app_id),
+            None => false,
+        })
+        .cloned()
+        .collect::<Vec<_>>();
+
+    let install_size_bytes = calculate_directory_size(Path::new(&entry.install_dir)).ok();
+
+    Ok((
+        GameDetailSnapshot {
+            entry,
+            install_size_bytes,
+            related_entries,
+        },
+        pending_refresh,
+    ))
 }
 
 #[tauri::command]
-pub async fn get_game_library(app: tauri::AppHandle) -> Result<GameLibrarySnapshot, AppError> {
+pub async fn get_game_library(
+    app: tauri::AppHandle,
+    locale: String,
+) -> Result<GameLibrarySnapshot, AppError> {
     let database_path = app_database_path(&app)?;
-    tauri::async_runtime::spawn_blocking(move || load_reconciled_library(&database_path))
-        .await
-        .map_err(|error| AppError::SystemError(error.to_string()))?
+    let cache_dir = metadata_cache_dir(
+        &app.path()
+            .app_data_dir()
+            .map_err(|error| AppError::SystemError(error.to_string()))?,
+    )?;
+    let locale_for_task = locale.clone();
+    let result = tauri::async_runtime::spawn_blocking(move || {
+        load_library_with_eager_metadata_refresh(&database_path, &cache_dir, &locale_for_task)
+    })
+    .await
+    .map_err(|error| AppError::SystemError(error.to_string()))??;
+
+    if !result.pending_metadata_refresh_app_ids.is_empty() {
+        let refresh_cache_dir = metadata_cache_dir(
+            &app.path()
+                .app_data_dir()
+                .map_err(|error| AppError::SystemError(error.to_string()))?,
+        )?;
+        queue_background_metadata_refresh(
+            refresh_cache_dir,
+            result.pending_metadata_refresh_app_ids.clone(),
+            locale,
+        );
+    }
+
+    Ok(result.snapshot)
 }
 
 #[tauri::command]
-pub async fn refresh_game_library(app: tauri::AppHandle) -> Result<GameLibrarySnapshot, AppError> {
+pub async fn refresh_game_library(
+    app: tauri::AppHandle,
+    locale: String,
+) -> Result<GameLibrarySnapshot, AppError> {
     let database_path = app_database_path(&app)?;
-    tauri::async_runtime::spawn_blocking(move || load_reconciled_library(&database_path))
-        .await
-        .map_err(|error| AppError::SystemError(error.to_string()))?
+    let cache_dir = metadata_cache_dir(
+        &app.path()
+            .app_data_dir()
+            .map_err(|error| AppError::SystemError(error.to_string()))?,
+    )?;
+    let locale_for_task = locale.clone();
+    let result = tauri::async_runtime::spawn_blocking(move || {
+        load_library_with_eager_metadata_refresh(&database_path, &cache_dir, &locale_for_task)
+    })
+    .await
+    .map_err(|error| AppError::SystemError(error.to_string()))??;
+
+    if !result.pending_metadata_refresh_app_ids.is_empty() {
+        let refresh_cache_dir = metadata_cache_dir(
+            &app.path()
+                .app_data_dir()
+                .map_err(|error| AppError::SystemError(error.to_string()))?,
+        )?;
+        queue_background_metadata_refresh(
+            refresh_cache_dir,
+            result.pending_metadata_refresh_app_ids.clone(),
+            locale,
+        );
+    }
+
+    Ok(result.snapshot)
+}
+
+#[tauri::command]
+pub async fn get_game_detail(
+    app: tauri::AppHandle,
+    game_id: String,
+    locale: String,
+) -> Result<GameDetailSnapshot, AppError> {
+    let app_data_dir = app
+        .path()
+        .app_data_dir()
+        .map_err(|error| AppError::SystemError(error.to_string()))?;
+    let database_path = app_database_path(&app)?;
+    let cache_dir = metadata_cache_dir(&app_data_dir)?;
+    let cache_dir_for_task = cache_dir.clone();
+    let locale_for_task = locale.clone();
+
+    let (detail, pending_refresh) = tauri::async_runtime::spawn_blocking(move || {
+        let load = load_reconciled_library(&database_path, &cache_dir_for_task, &locale_for_task)?;
+        build_game_detail_snapshot(
+            &game_id,
+            &load.snapshot,
+            &cache_dir_for_task,
+            &locale_for_task,
+        )
+    })
+    .await
+    .map_err(|error| AppError::SystemError(error.to_string()))??;
+
+    if let Some(pending_refresh) = pending_refresh {
+        queue_background_metadata_refresh(cache_dir, vec![pending_refresh], locale);
+    }
+
+    Ok(detail)
 }
 
 #[tauri::command]
@@ -610,10 +902,7 @@ pub async fn register_manual_game(
 }
 
 #[tauri::command]
-pub async fn remove_manual_game(
-    app: tauri::AppHandle,
-    game_id: String,
-) -> Result<(), AppError> {
+pub async fn remove_manual_game(app: tauri::AppHandle, game_id: String) -> Result<(), AppError> {
     let database_path = app_database_path(&app)?;
     tauri::async_runtime::spawn_blocking(move || {
         let connection = open_database(&database_path)?;
@@ -629,16 +918,16 @@ mod tests {
     use std::path::{Path, PathBuf};
 
     use super::{
-        GameSource, ManualGameRegistrationInput, SteamScanEntry, build_steam_entry,
-        delete_manual_registration, ensure_manual_registration_table, insert_manual_registration,
-        load_manual_registrations, normalize_executable_path, normalize_install_root,
-        parse_app_manifest, parse_libraryfolders_vdf, reconcile_library,
+        build_steam_entry, delete_manual_registration, ensure_manual_registration_table,
+        insert_manual_registration, load_manual_registrations, normalize_executable_path,
+        normalize_install_root, parse_app_manifest, parse_libraryfolders_vdf, reconcile_library,
+        GameSource, ManualGameRegistrationInput, SteamScanEntry,
     };
 
     mod steam_contracts {
         use std::path::{Path, PathBuf};
 
-        use super::{GameSource, build_steam_entry};
+        use super::{build_steam_entry, GameSource};
 
         #[test]
         fn steam_entries_keep_nullable_executable_paths_in_phase_3() {
@@ -664,8 +953,8 @@ mod tests {
 
     mod steam_parsing {
         use super::{
-            Path, PathBuf, SteamScanEntry, normalize_install_root, parse_app_manifest,
-            parse_libraryfolders_vdf, reconcile_library,
+            normalize_install_root, parse_app_manifest, parse_libraryfolders_vdf,
+            reconcile_library, Path, PathBuf, SteamScanEntry,
         };
 
         #[test]
@@ -746,9 +1035,10 @@ mod tests {
         use rusqlite::Connection;
 
         use super::{
-            GameSource, ManualGameRegistrationInput, SteamScanEntry, delete_manual_registration,
-            ensure_manual_registration_table, insert_manual_registration, load_manual_registrations,
-            normalize_executable_path, normalize_install_root, reconcile_library,
+            delete_manual_registration, ensure_manual_registration_table,
+            insert_manual_registration, load_manual_registrations, normalize_executable_path,
+            normalize_install_root, reconcile_library, GameSource, ManualGameRegistrationInput,
+            SteamScanEntry,
         };
 
         fn memory_connection() -> Connection {
@@ -765,8 +1055,8 @@ mod tests {
                 executable_path: r"D:\Games\Celeste\Celeste.exe".into(),
             };
 
-            let registration =
-                insert_manual_registration(&connection, &input, "1712274000").expect("manual insert");
+            let registration = insert_manual_registration(&connection, &input, "1712274000")
+                .expect("manual insert");
             let loaded = load_manual_registrations(&connection).expect("manual rows should load");
 
             assert_eq!(loaded.len(), 1);
@@ -785,8 +1075,8 @@ mod tests {
                 executable_path: r"D:\Games\Celeste\Celeste.exe".into(),
             };
 
-            let registration =
-                insert_manual_registration(&connection, &input, "1712274000").expect("manual insert");
+            let registration = insert_manual_registration(&connection, &input, "1712274000")
+                .expect("manual insert");
             delete_manual_registration(&connection, &format!("manual:{}", registration.id))
                 .expect("manual delete should succeed");
 
@@ -908,6 +1198,44 @@ mod tests {
             assert_eq!(reconciled.entries[0].source, GameSource::Manual);
             assert!(reconciled.entries[0].user_added);
             assert!(reconciled.entries[0].removable);
+        }
+
+        #[test]
+        fn detail_snapshot_keeps_related_entries_separate() {
+            let connection = memory_connection();
+            let input = ManualGameRegistrationInput {
+                display_name: "Counter-Strike 2".into(),
+                executable_path: r"D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive\game\bin\win64\cs2.exe".into(),
+            };
+
+            insert_manual_registration(&connection, &input, "1712274000").expect("manual insert");
+            let manuals = load_manual_registrations(&connection).expect("manual rows should load");
+            let snapshot = super::super::SteamScanSnapshot {
+                entries: vec![SteamScanEntry {
+                    app_id: 730,
+                    display_name: "Counter-Strike 2".into(),
+                    install_dir: PathBuf::from(
+                        r"D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive",
+                    ),
+                    normalized_install_root: normalize_install_root(Path::new(
+                        r"D:\SteamLibrary\steamapps\common\Counter-Strike Global Offensive",
+                    )),
+                }],
+                steam_library_paths: vec![r"D:\SteamLibrary".into()],
+                scanned_at: "1712274000".into(),
+            };
+
+            let library = reconcile_library(snapshot, manuals);
+            let cache_dir = std::env::temp_dir().join("optihub-phase4-detail");
+            let _ = std::fs::remove_dir_all(&cache_dir);
+            std::fs::create_dir_all(&cache_dir).expect("cache dir should exist");
+            let (detail, _pending_refresh) =
+                super::super::build_game_detail_snapshot("steam:730", &library, &cache_dir, "en")
+                    .expect("detail snapshot should be created");
+
+            assert_eq!(detail.entry.id, "steam:730");
+            assert_eq!(detail.related_entries.len(), 1);
+            assert_eq!(detail.related_entries[0].source, GameSource::Manual);
         }
     }
 }

@@ -1,15 +1,12 @@
-import { useI18n } from '../i18n/useI18n'
+import { Navigate, useParams } from 'react-router'
 
 export function GamesPage() {
-  const { copy } = useI18n()
-  const page = copy.pages.games
+  const params = useParams()
+  const gameId = params.gameId ? decodeURIComponent(params.gameId) : null
 
-  return (
-    <div className="page-panel" id="page-games">
-      <span className="page-eyebrow">{page.eyebrow}</span>
-      <h1 className="page-title">{page.title}</h1>
-      <p className="page-subtitle">{page.subtitle}</p>
-      <p className="page-note">{page.managementHint}</p>
-    </div>
-  )
+  if (gameId) {
+    return <Navigate replace to={`/library/${encodeURIComponent(gameId)}`} />
+  }
+
+  return <Navigate replace to="/library" />
 }

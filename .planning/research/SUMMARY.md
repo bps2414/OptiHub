@@ -10,7 +10,7 @@
 
 **Differentiators:** Guided optimization flow (wizard-style), risk classification (Safe/Limited/Experimental), multi-tool integration (OptiScaler + Special K + Lossless Scaling), PCGamingWiki compatibility data, contextual explanations for recommendations, batch diagnostics view.
 
-**Watch Out For:** IPC main thread blocking (freezes UI), Rust↔TS type mismatches (silent `undefined`), Steam VDF parsing edge cases, DLL conflicts between OptiScaler and Special K, Lossless Scaling legal boundary (detection only, never redistribute), backup/restore reliability is mission-critical, WebView2 rendering quirks on Windows, scope creep from v2/v3 features into MVP.
+**Watch Out For:** IPC main thread blocking (freezes UI), Rust↔TS type mismatches (silent `undefined`), Steam VDF parsing edge cases, DLL conflicts between OptiScaler and Special K, Lossless Scaling legal boundary (detection only, never redistribute), tool-model mismatches across integrations, backup/restore reliability is mission-critical, WebView2 rendering quirks on Windows, scope creep from v2/v3 features into MVP.
 
 ---
 
@@ -69,7 +69,7 @@
 2. Hardware Detection (CPU/GPU/RAM/VRAM/monitor)
 3. Game Detection (Steam registry, VDF/ACF, library)
 4. Game UI (library view, detail page, metadata)
-5. Tool Detection (OptiScaler, Special K, Lossless Scaling)
+5. Tool Integration & Deployment Management (OptiScaler, Special K, Lossless Scaling)
 6. Recommendation Engine (rules, confidence, explanations)
 7. Preset System (Quality/Balanced/Performance)
 8. Apply & Restore (backup engine, config application, rollback)

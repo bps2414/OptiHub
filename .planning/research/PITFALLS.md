@@ -67,7 +67,7 @@
 ---
 
 #### 4. Tool Integration DLL Conflicts
-**Risk:** High | **Phase:** 5-8 (Tool Detection + Apply)
+**Risk:** High | **Phase:** 5-8 (Tool Integration + Apply)
 
 **What goes wrong:** OptiScaler and Special K both work by placing DLLs in game directories. Both may want the same DLL name (`dxgi.dll`). Incorrect placement breaks games.
 
@@ -85,12 +85,12 @@
 - Always test combinations: OptiScaler alone, Special K alone, both together
 - Robust backup-before-write is CRITICAL — this is the safety net
 
-**Which phase:** Tool Detection (Phase 5), Apply & Restore (Phase 8)
+**Which phase:** Tool Integration & Deployment Management (Phase 5), Apply & Restore (Phase 8)
 
 ---
 
 #### 5. Lossless Scaling Legal/Detection Boundary
-**Risk:** Medium | **Phase:** 5 (Tool Detection)
+**Risk:** Medium | **Phase:** 5 (Tool Integration & Deployment Management)
 
 **What goes wrong:** Lossless Scaling is commercial software. Any attempt to bundle, copy, or redistribute it violates terms. Even detecting it incorrectly (false positive) creates confusion.
 
@@ -104,10 +104,10 @@
 - Detection ONLY: check Steam library for app ID 993090
 - Never access, copy, or modify Lossless Scaling files
 - Clear UI messaging: "Detected" vs "Not installed — get it on Steam"
-- No download links, no workarounds, no bypass
+- No download links beyond the official licensed channel, no workarounds, no bypass
 - Document this constraint in code comments at the detection site
 
-**Which phase:** Tool Detection (Phase 5)
+**Which phase:** Tool Integration & Deployment Management (Phase 5)
 
 ---
 

@@ -6,7 +6,7 @@ import { I18nProvider } from '../../i18n/I18nProvider'
 import { GameLibraryTable } from './GameLibraryTable'
 
 describe('GameLibraryTable', () => {
-  it('renders Steam and Manual rows with manual-only remove actions', () => {
+  it('renders rich entries with detail and remove actions', () => {
     render(
       <MemoryRouter>
         <I18nProvider initialLocale="en">
@@ -15,7 +15,7 @@ describe('GameLibraryTable', () => {
               {
                 id: 'steam:730',
                 displayName: 'Counter-Strike 2',
-                executablePath: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive/game/bin/win64/cs2.exe',
+                executablePath: null,
                 installDir: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive',
                 source: 'steam',
                 steamAppId: 730,
@@ -23,6 +23,15 @@ describe('GameLibraryTable', () => {
                 removable: false,
                 userAdded: false,
                 lastSeenAt: '1712274000',
+                metadata: {
+                  libraryPortraitAssetUrl: null,
+                  detailHeroAssetUrl: null,
+                  shortDescription: 'Competitive shooter',
+                  platforms: ['Windows'],
+                  cacheStatus: 'fallback',
+                  lastUpdatedAt: null,
+                  sharedSteamAppId: 730,
+                },
               },
               {
                 id: 'manual:celeste',
@@ -34,20 +43,30 @@ describe('GameLibraryTable', () => {
                 relatedSteamAppId: 730,
                 removable: true,
                 userAdded: true,
-                lastSeenAt: '1712274000',
+                lastSeenAt: '1712274001',
+                metadata: {
+                  libraryPortraitAssetUrl: null,
+                  detailHeroAssetUrl: null,
+                  shortDescription: null,
+                  platforms: ['Windows'],
+                  cacheStatus: 'fallback',
+                  lastUpdatedAt: null,
+                  sharedSteamAppId: 730,
+                },
               },
             ]}
+            onOpenDetail={vi.fn()}
             onRemove={vi.fn()}
+            viewMode="grid"
           />
         </I18nProvider>
       </MemoryRouter>,
     )
 
+    expect(screen.getAllByText('Open details')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
+    expect(screen.getAllByText('Windows').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Steam').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Manual').length).toBeGreaterThan(0)
-    expect(screen.getByText('Linked to Steam detection')).toBeInTheDocument()
-    expect(screen.getByText('Detected via Steam')).toBeInTheDocument()
-    expect(screen.queryByText('Added manually')).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
   })
 })

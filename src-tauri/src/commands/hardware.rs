@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 use sysinfo::System;
-use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, DXGI_ADAPTER_DESC1, IDXGIFactory1};
-use windows::Win32::Graphics::Gdi::{
-    DEVMODEW, DISPLAY_DEVICE_ATTACHED_TO_DESKTOP, DISPLAY_DEVICEW, ENUM_CURRENT_SETTINGS,
-    EnumDisplayDevicesW, EnumDisplaySettingsW,
-};
 use windows::core::PCWSTR;
+use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, DXGI_ADAPTER_DESC1};
+use windows::Win32::Graphics::Gdi::{
+    EnumDisplayDevicesW, EnumDisplaySettingsW, DEVMODEW, DISPLAY_DEVICEW,
+    DISPLAY_DEVICE_ATTACHED_TO_DESKTOP, ENUM_CURRENT_SETTINGS,
+};
 use wmi::WMIConnection;
 
 use crate::errors::AppError;
@@ -131,20 +131,18 @@ fn normalize_gpu_snapshot(
     rows: &[VideoControllerRow],
     dxgi_adapter: Option<&DxgiAdapterInfo>,
 ) -> GpuSnapshot {
-    let best_row = rows
-        .iter()
-        .max_by_key(|row| {
-            let has_name = normalize_optional_string(row.name.as_deref()).is_some() as u8;
-            let has_vram = row.adapter_ram.is_some() as u8;
-            let not_basic_driver = (!row
-                .name
-                .as_deref()
-                .unwrap_or_default()
-                .to_ascii_lowercase()
-                .contains("basic render")) as u8;
+    let best_row = rows.iter().max_by_key(|row| {
+        let has_name = normalize_optional_string(row.name.as_deref()).is_some() as u8;
+        let has_vram = row.adapter_ram.is_some() as u8;
+        let not_basic_driver = (!row
+            .name
+            .as_deref()
+            .unwrap_or_default()
+            .to_ascii_lowercase()
+            .contains("basic render")) as u8;
 
-            (has_name, has_vram, not_basic_driver)
-        });
+        (has_name, has_vram, not_basic_driver)
+    });
 
     match best_row {
         Some(row) => GpuSnapshot {
@@ -191,7 +189,10 @@ fn build_display_snapshot(
 }
 
 fn wide_to_string(buffer: &[u16]) -> Option<String> {
-    let length = buffer.iter().position(|value| *value == 0).unwrap_or(buffer.len());
+    let length = buffer
+        .iter()
+        .position(|value| *value == 0)
+        .unwrap_or(buffer.len());
 
     if length == 0 {
         return None;
@@ -262,14 +263,11 @@ fn dxgi_description_to_info(description: &DXGI_ADAPTER_DESC1) -> DxgiAdapterInfo
 }
 
 fn select_best_dxgi_adapter(adapters: &[DxgiAdapterInfo]) -> Option<DxgiAdapterInfo> {
-    adapters
-        .iter()
-        .cloned()
-        .max_by_key(|adapter| {
-            let has_name = adapter.description.is_some() as u8;
-            let dedicated_memory = adapter.dedicated_video_memory.unwrap_or_default();
-            (has_name, dedicated_memory)
-        })
+    adapters.iter().cloned().max_by_key(|adapter| {
+        let has_name = adapter.description.is_some() as u8;
+        let dedicated_memory = adapter.dedicated_video_memory.unwrap_or_default();
+        (has_name, dedicated_memory)
+    })
 }
 
 fn detect_display_snapshot() -> DisplaySnapshot {
@@ -280,8 +278,7 @@ fn detect_display_snapshot() -> DisplaySnapshot {
         adapter.cb = size_of::<DISPLAY_DEVICEW>() as u32;
 
         let found_adapter =
-            unsafe { EnumDisplayDevicesW(PCWSTR::null(), device_index, &mut adapter, 0) }
-                .as_bool();
+            unsafe { EnumDisplayDevicesW(PCWSTR::null(), device_index, &mut adapter, 0) }.as_bool();
 
         if !found_adapter {
             break;
@@ -351,8 +348,8 @@ mod tests {
 
     use super::{
         build_cpu_snapshot, build_display_snapshot, dxgi_description_to_info,
-        normalize_gpu_snapshot, normalize_monitor_name, select_best_dxgi_adapter,
-        DxgiAdapterInfo, VideoControllerRow,
+        normalize_gpu_snapshot, normalize_monitor_name, select_best_dxgi_adapter, DxgiAdapterInfo,
+        VideoControllerRow,
     };
 
     #[test]
@@ -368,16 +365,16 @@ mod tests {
     fn gpu_normalization_prefers_row_with_name_and_vram() {
         let snapshot = normalize_gpu_snapshot(
             &[
-            VideoControllerRow {
-                name: Some("Microsoft Basic Render Driver".into()),
-                adapter_compatibility: Some("Microsoft".into()),
-                adapter_ram: None,
-            },
-            VideoControllerRow {
-                name: Some("NVIDIA GeForce RTX 4070".into()),
-                adapter_compatibility: Some("NVIDIA".into()),
-                adapter_ram: Some(12_884_901_888),
-            },
+                VideoControllerRow {
+                    name: Some("Microsoft Basic Render Driver".into()),
+                    adapter_compatibility: Some("Microsoft".into()),
+                    adapter_ram: None,
+                },
+                VideoControllerRow {
+                    name: Some("NVIDIA GeForce RTX 4070".into()),
+                    adapter_compatibility: Some("NVIDIA".into()),
+                    adapter_ram: Some(12_884_901_888),
+                },
             ],
             None,
         );
@@ -426,7 +423,10 @@ mod tests {
     fn normalize_monitor_name_hides_generic_monitor_labels() {
         assert_eq!(normalize_monitor_name(Some("Generic PnP Monitor")), None);
         assert_eq!(normalize_monitor_name(Some("Monitor Padrão")), None);
-        assert_eq!(normalize_monitor_name(Some("LG ULTRAGEAR")), Some("LG ULTRAGEAR".into()));
+        assert_eq!(
+            normalize_monitor_name(Some("LG ULTRAGEAR")),
+            Some("LG ULTRAGEAR".into())
+        );
     }
 
     #[test]

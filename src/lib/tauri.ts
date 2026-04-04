@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core'
 import type { Locale } from '../i18n/locale'
 import type {
   AppError,
+  GameDetailSnapshot,
   GameLibraryEntry,
   GameLibrarySnapshot,
   HardwareSnapshot,
@@ -62,12 +63,19 @@ export async function getHardwareSnapshot(): Promise<HardwareSnapshot> {
   return tauriInvoke<HardwareSnapshot>('get_hardware_snapshot')
 }
 
-export async function getGameLibrary(): Promise<GameLibrarySnapshot> {
-  return tauriInvoke<GameLibrarySnapshot>('get_game_library')
+export async function getGameLibrary(locale: Locale): Promise<GameLibrarySnapshot> {
+  return tauriInvoke<GameLibrarySnapshot>('get_game_library', { locale })
 }
 
-export async function refreshGameLibrary(): Promise<GameLibrarySnapshot> {
-  return tauriInvoke<GameLibrarySnapshot>('refresh_game_library')
+export async function refreshGameLibrary(locale: Locale): Promise<GameLibrarySnapshot> {
+  return tauriInvoke<GameLibrarySnapshot>('refresh_game_library', { locale })
+}
+
+export async function getGameDetail(
+  gameId: string,
+  locale: Locale,
+): Promise<GameDetailSnapshot> {
+  return tauriInvoke<GameDetailSnapshot>('get_game_detail', { gameId, locale })
 }
 
 export async function registerManualGame(

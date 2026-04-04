@@ -3,7 +3,6 @@ import type { ComponentType } from 'react'
 import {
   Activity,
   Award,
-  Gamepad2,
   Home,
   Library,
   Settings,
@@ -19,7 +18,6 @@ import { useI18n } from '../i18n/useI18n'
 const primaryLinks = [
   { key: 'home', to: '/', icon: Home, end: true },
   { key: 'library', to: '/library', icon: Library },
-  { key: 'games', to: '/games', icon: Gamepad2 },
   { key: 'optimizations', to: '/optimizations', icon: Zap },
   { key: 'tools', to: '/tools', icon: Wrench },
   { key: 'presets', to: '/presets', icon: SlidersHorizontal },

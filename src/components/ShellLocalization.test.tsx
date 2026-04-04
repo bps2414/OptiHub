@@ -22,12 +22,14 @@ describe('shell localization', () => {
 
     expect(screen.getByRole('navigation', { name: 'Navegação principal' })).toBeInTheDocument()
     expect(screen.getByText('Biblioteca')).toBeInTheDocument()
+    expect(screen.queryByText('Jogos')).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Configurações' })).toBeInTheDocument()
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Idioma do aplicativo' }), 'en')
 
     expect(screen.getByRole('navigation', { name: 'Primary navigation' })).toBeInTheDocument()
     expect(screen.getByText('Library')).toBeInTheDocument()
+    expect(screen.queryByText('Games')).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument()
   })
 })

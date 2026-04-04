@@ -18,7 +18,9 @@ function App() {
         <Route element={<AppShell />}>
           <Route index element={<HomePage />} />
           <Route path="/library" element={<LibraryPage />} />
+          <Route path="/library/:gameId" element={<LibraryPage />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/games/:gameId" element={<GamesPage />} />
           <Route path="/optimizations" element={<OptimizationsPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/presets" element={<PresetsPage />} />

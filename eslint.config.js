@@ -14,6 +14,7 @@ export default defineConfig([
     '.tmp/**',
     'src-tauri/target/**',
     'src-tauri/target-*/**',
+    'src-tauri/src-tauri/**',
   ]),
   {
     files: ['**/*.{ts,tsx}'],

@@ -65,7 +65,18 @@ pnpm tauri build
 
 Currently in active development — **Phase 03: Game Detection** is complete. Next up: **Phase 04: Game Library UI & Metadata**.
 
-See [`.planning/`](.planning/) for the roadmap and phase plans.
+OpenSpec is now the active planning workflow for repository changes.
+
+- Use [`openspec/`](openspec/) for active changes, migration notes, and capability-oriented planning.
+- Use [`.planning/`](.planning/) only as historical migration context from the legacy GSD workflow.
+- Use [`docs/repository-structure.md`](docs/repository-structure.md) for the current repository map and cleanup rules.
+
+## Repository Layout
+
+- Active product source: [`src/`](src/), [`public/`](public/), [`src-tauri/`](src-tauri/), and the root project config files
+- Active planning: [`openspec/`](openspec/)
+- Historical planning archive: [`.planning/`](.planning/)
+- Workspace continuity briefing: [`.agent/CONTINUITY.md`](.agent/CONTINUITY.md)
 
 ## License
 

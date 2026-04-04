@@ -197,6 +197,23 @@ Status atual: Fase 3 concluída. Próxima etapa: Fase 4 - UI da Biblioteca & Met
 
 ---
 
+## Fluxo de planejamento
+
+O OpenSpec agora é o fluxo ativo de planejamento do repositório.
+
+- Use [`openspec/`](openspec/) para changes ativos, notas da migração e planejamento por capability.
+- Use [`.planning/`](.planning/) apenas como contexto histórico da migração do fluxo legado em GSD.
+- Use [`docs/repository-structure.md`](docs/repository-structure.md) para o mapa atual do repositório e as regras de limpeza.
+
+## Estrutura do repositório
+
+- Código ativo do produto: [`src/`](src/), [`public/`](public/), [`src-tauri/`](src-tauri/) e os arquivos de configuração na raiz
+- Planejamento ativo: [`openspec/`](openspec/)
+- Arquivo histórico de planejamento: [`.planning/`](.planning/)
+- Briefing de continuidade do workspace: [`.agent/CONTINUITY.md`](.agent/CONTINUITY.md)
+
+---
+
 ## Como rodar localmente
 
 ### Pré-requisitos

@@ -56,7 +56,7 @@ OptiHub follows a **two-process model** typical of Tauri 2.x applications:
 | **hardware** | CPU, GPU, RAM, VRAM detection via `sysinfo` + `wmi` crates |
 | **steam** | Registry lookup, VDF/ACF parsing, library folder enumeration |
 | **games** | Game registry, manual game addition, metadata management |
-| **tools** | Tool detection (OptiScaler, Special K, Lossless Scaling), version checking |
+| **tools** | Tool integration registry, source/channel metadata, global installs, and per-game deployment tracking |
 | **recommendations** | Rules engine: game + hardware + tool → recommendation + confidence |
 | **presets** | Preset definitions, per-game config generation |
 | **applicator** | Config file manipulation with backup-before-write |
@@ -69,7 +69,7 @@ OptiHub follows a **two-process model** typical of Tauri 2.x applications:
 
 | Store | Technology | Contents |
 |-------|-----------|----------|
-| **App Database** | SQLite | Game library, preset configs, backup records, tool status |
+| **App Database** | SQLite | Game library, preset configs, backup records, tool integration records, per-game deployment state |
 | **Config Files** | JSON | App settings, tool configurations, preset definitions |
 | **Backup Store** | File System | Original game configs before modification |
 | **Cache** | File System | Game metadata, cover art, PCGamingWiki data |
@@ -129,13 +129,14 @@ All system operations (hardware detection, file I/O, registry access) happen exc
 8. User can restore anytime via backup history
 ```
 
-#### Tool Detection Pattern
+#### Tool Integration Pattern
 ```
-1. Scan known installation paths (registry, common directories)
-2. Check tool-specific markers (executables, DLLs, config files)
-3. Verify version compatibility
-4. Report: installed / not found / incompatible version
-5. For Lossless Scaling: check Steam library specifically (no other detection)
+1. Classify each tool by integration model (global integration, user-supplied local source, per-game deployment, licensed Steam-only detection)
+2. Detect tool-specific markers (executables, DLLs, config files, Steam ownership markers) without flattening them into a single status
+3. Record provenance, release channel, version/build, and compliance state for each tool record
+4. For OptiScaler: inspect per-game deployment near the target executable and preserve user-supplied local source metadata
+5. For Special K: detect/register global integration and supported official channels
+6. For Lossless Scaling: check Steam library specifically (no bundling, copying, or unofficial acquisition flow)
 ```
 
 ### Suggested Build Order
@@ -151,7 +152,7 @@ Phase 3: Game Detection (Steam registry, VDF/ACF parsing, library)
     │
 Phase 4: Game UI (library view, game detail, metadata display)
     │
-Phase 5: Tool Detection (OptiScaler, Special K, Lossless Scaling scan)
+Phase 5: Tool Integration & Deployment Management (tool-specific models, provenance, channel, per-game deployment state)
     │
 Phase 6: Recommendation Engine (rules, confidence scoring, explanations)
     │

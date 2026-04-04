@@ -74,7 +74,9 @@ OptiHub is a Windows-first, offline-first desktop application that centralizes P
 <!-- GSD:conventions-start source:CONVENTIONS.md -->
 ## Conventions
 
-Full conventions: `.planning/CONVENTIONS.md`
+Active planning workflow: `openspec/README.md`
+Historical GSD conventions: `.planning/CONVENTIONS.md`
+Repository structure map: `docs/repository-structure.md`
 
 ### Agent Language Policy
 
@@ -110,17 +112,20 @@ See `.planning/CONVENTIONS.md` for the full checklist and what NOT to do.
 Architecture not yet mapped. Follow existing patterns found in the codebase.
 <!-- GSD:architecture-end -->
 
-<!-- GSD:workflow-start source:GSD defaults -->
-## GSD Workflow Enforcement
+<!-- OpenSpec:workflow-start source:openspec/README.md -->
+## OpenSpec Workflow Enforcement
 
-Before using Edit, Write, or other file-changing tools, start work through a GSD command so planning artifacts and execution context stay in sync.
+Before using Edit, Write, or other file-changing tools for product behavior, roadmap, planning, or workflow changes, start from an OpenSpec change so planning artifacts and execution context stay in sync.
 
 Use these entry points:
-- `/gsd-quick` for small fixes, doc updates, and ad-hoc tasks
-- `/gsd-debug` for investigation and bug fixing
-- `/gsd-execute-phase` for planned phase work
+- `/opsx:propose <change-name-or-description>` to create or extend proposal, design, specs, and tasks
+- `/opsx:apply <change-name>` to implement the task checklist for an approved change
+- `/opsx:archive <change-name>` after implementation is complete and validated
 
-Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.
+Additional rules:
+- Treat `openspec/changes/*` and `openspec/specs/*` as the active planning surfaces
+- Treat `.planning/*` as historical migration context; do not create new GSD phase or plan artifacts unless the user explicitly asks for legacy maintenance
+- Small local edits that do not change requirements can proceed directly, but requirement or workflow changes should flow through OpenSpec first
 
 ### Post-Execution Checklist (every phase and quick task)
 
@@ -131,13 +136,13 @@ After any execution that changes user-facing behavior:
 3. **Push** — `git push origin master`
 
 This is not optional. Stale public READMEs misrepresent the project state on GitHub.
-<!-- GSD:workflow-end -->
+<!-- OpenSpec:workflow-end -->
 
 
 
 <!-- GSD:profile-start -->
 ## Developer Profile
 
-> Profile not yet configured. Run `/gsd-profile-user` to generate your developer profile.
+> Profile not yet configured. Add one through the current planning workflow if needed.
 > This section is managed by `generate-claude-profile` -- do not edit manually.
 <!-- GSD:profile-end -->
