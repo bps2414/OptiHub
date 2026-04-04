@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 3 planned - ready for execution
-last_updated: "2026-04-03T23:11:10.4652464-03:00"
-last_activity: 2026-04-03 -- Phase 03 planned with research, validation, and 2 execution plans
+status: ready
+stopped_at: Phase 03 complete - ready for Phase 04
+last_updated: "2026-04-03T23:53:17.7390736-03:00"
+last_activity: 2026-04-03 -- Phase 03 completed and verified
 progress:
   total_phases: 9
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 22
+  completed_phases: 3
+  total_plans: 7
+  completed_plans: 7
+  percent: 33
 ---
 
 # Project State
@@ -21,24 +21,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-03)
 
 **Core value:** The user can optimize any detected game with one guided flow - see what tool to use, pick a preset, apply it safely, and undo it anytime.
-**Current focus:** Phase 03 - game-detection
+**Current focus:** Phase 04 - game-library-ui-metadata
 
 ## Current Position
 
-Phase: 3 of 9 (Game Detection)
-Plan: 2 of 2 in current phase
-Status: Ready to execute Phase 03
-Last activity: 2026-04-03 -- Phase 03 planned with research, validation, and 2 execution plans
+Phase: 4 of 9 (Game Library UI & Metadata)
+Plan: 0 of 2 in current phase
+Status: Ready to plan Phase 04
+Last activity: 2026-04-03 -- Phase 03 completed and verified
 
-Progress: [##--------] 22%
+Progress: [###-------] 33%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 5
-- Average duration: 16 min
-- Total execution time: 81 min
+- Total plans completed: 7
+- Average duration: 25 min
+- Total execution time: 175 min
 
 **By Phase:**
 
@@ -46,11 +46,12 @@ Progress: [##--------] 22%
 |-------|-------|-------|----------|
 | 01 | 3 | 39 min | 13 min |
 | 02 | 2 | 42 min | 21 min |
+| 03 | 2 | 94 min | 47 min |
 
 **Recent Trend:**
 
-- Last 3 plans: 16 min, 24 min, 18 min
-- Trend: Stable
+- Last 3 plans: 18 min, 34 min, 60 min
+- Trend: Increasing scope
 
 *Updated after each plan completion*
 
@@ -71,6 +72,7 @@ Recent decisions affecting current work:
 - [Phase 01]: Shell copy now flows through `src/i18n/*` with EN + pt-BR catalogs, locale detection, and persisted user choice
 - [Phase 02]: Hardware detection flows through a single `get_hardware_snapshot` IPC command with nullable fields for unavailable data
 - [Phase 02]: Manual display override is persisted in the frontend hardware store instead of a backend settings subsystem
+- [Phase 03]: Manual registrations are stored separately from Steam detections, and install-root reconciliation preserves user-added provenance while keeping Steam as the effective source when matched
 
 ### Pending Todos
 
@@ -82,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-04T01:54:42.949Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-game-detection/03-01-PLAN.md
+Last session: 2026-04-03T23:53:17.7390736-03:00
+Stopped at: Phase 03 complete - ready for Phase 04
+Resume file: .planning/phases/03-game-detection/03-VERIFICATION.md

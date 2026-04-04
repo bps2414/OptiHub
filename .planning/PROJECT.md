@@ -16,20 +16,20 @@ The user can optimize any detected game with one guided flow — see what tool t
   Validated in Phase 1: Foundation & App Shell
 - [x] Hardware snapshot on Diagnostics and Home with CPU, GPU, RAM, display data, and inline manual display override
   Validated in Phase 2: Hardware Detection
+- [x] Steam game detection now ships with a management-first library, native manual executable registration, refresh/remove actions, and visible Steam/manual provenance
+  Validated in Phase 3: Game Detection
 
 ### Active
 
-- [ ] Detect games installed via Steam library
-- [ ] Allow manual game/executable registration
 - [ ] Recommend optimization tool per game with confidence level (safe/limited/experimental)
 - [ ] Explain recommendation rationale in user-friendly language
 - [ ] Provide Quality/Balanced/Performance presets per game
 - [ ] Apply configurations locally with explicit user confirmation
 - [ ] Restore/rollback any changes made by the app
 - [ ] Use Steam/SteamDB for game metadata (covers, images, descriptions)
-- [ ] Integrate OptiScaler (open-source upscaler override)
+- [ ] Integrate OptiScaler via official or user-supplied sources with per-game deployment visibility
 - [ ] Integrate Lossless Scaling (detect if user owns it via Steam only — no redistribution)
-- [ ] Integrate Special K (Swiss Army tool for PC games)
+- [ ] Integrate Special K as a tracked external tool with official-channel visibility
 - [ ] Integrate PCGamingWiki as compatibility/fix data source
 - [ ] Credits & Licenses screen listing all tools, authors, sources, and licenses
 - [ ] Compliance policy: no redistribution, proper attribution, license documentation for all integrated tools
@@ -59,9 +59,9 @@ The user can optimize any detected game with one guided flow — see what tool t
 4. Casual gamers
 
 **Existing ecosystem:**
-- **OptiScaler** — Open-source upscaler override (DLSS/FSR/XeSS). MIT-compatible. Can be bundled with proper attribution.
+- **OptiScaler** — Open-source upscaler override (DLSS/FSR/XeSS). Its practical integration model is per-game deployment near the target executable, with provenance and build/channel tracking.
 - **Lossless Scaling** — Paid app on Steam. Frame generation and upscaling. **Cannot be redistributed** — detect only if user owns it.
-- **Special K** — Swiss Army tool for PC games. Open-source (GPLv3). Broad compatibility.
+- **Special K** — Swiss Army tool for PC games. Open-source (GPLv3). Better modeled as a global integration with official-channel tracking.
 - **PCGamingWiki** — Community wiki for PC game fixes, compatibility data, known issues. Creative Commons data.
 - **Steam/SteamDB** — Game library detection, metadata, cover art.
 
@@ -81,6 +81,7 @@ The user can optimize any detected game with one guided flow — see what tool t
 - **Offline-first**: All core functionality must work without internet connection
 - **No redistribution**: Third-party tools must not be bundled without license compliance; prefer detection of existing installs
 - **Lossless Scaling**: Commercial software — integration only via detection of existing Steam install, never redistribute
+- **Official-source bias**: Default to official acquisition channels and user-supplied local files/paths; do not promote unofficial mirrors by default
 - **User consent**: All system modifications require explicit user confirmation before execution
 - **Reversibility**: Every change the app makes must be undoable
 - **Safety classification**: Every recommendation must carry a risk level (safe/limited/experimental)
@@ -95,11 +96,12 @@ The user can optimize any detected game with one guided flow — see what tool t
 | Lightweight in-repo i18n foundation | Keep localization offline-first and simple while blocking new hardcoded shell strings | ✓ Phase 1 bilingual shell gap closed |
 | Frontend-persisted display override | Deliver monitor override in Phase 2 without inventing a broader backend settings subsystem too early | ✓ Phase 2 shipped and verified |
 | Steam as primary game source | Largest PC game platform, well-documented library structure | — Pending |
+| Separate manual-registration persistence | Steam rows do not reliably know executable paths in Phase 3, so manual registrations persist separately and reconcile by install root while preserving user-added provenance | ✓ Phase 3 shipped and verified |
 | No Magpie integration | Explicit project owner decision | ✓ Good |
 | Special K replaces Magpie role | Broader functionality, open-source, active development | — Pending |
 | Offline-first architecture | Simplifies MVP, respects privacy, no server costs | ✓ Good |
 | No auth/accounts in MVP | Reduces complexity, aligns with offline-first principle | ✓ Good |
-| Detection-first integration model | Detect installed tools rather than bundle — safer legally and technically | ✓ Good |
+| Tool-specific integration model | Treat OptiScaler per-game, Special K global, and Lossless Scaling as licensed Steam-only detection rather than flattening everything into installed/missing | — Pending |
 | Risk classification system | Safe/Limited/Experimental labels build user trust and enable informed decisions | — Pending |
 
 ## Evolution
@@ -132,4 +134,4 @@ After any phase completion or task that changes user-facing functionality:
 See `.planning/CONVENTIONS.md` for the full README sync policy and checklist.
 
 ---
-*Last updated: 2026-04-03 — Phase 2 hardware detection complete and docs synced*
+*Last updated: 2026-04-03 — Phase 3 game detection complete and docs synced*

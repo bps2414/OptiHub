@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Game Detection
 
-- [ ] **GAME-01**: User can view automatically detected Steam games with cover art and metadata
-- [ ] **GAME-02**: User can register a game manually by pointing to an executable
+- [x] **GAME-01**: User can view automatically detected Steam games in the game library; richer cover art and metadata presentation is handled in Phase 4
+- [x] **GAME-02**: User can register a game manually by pointing to an executable
 - [ ] **GAME-03**: User can view game details (name, install path, size, platform info)
-- [ ] **GAME-04**: User can refresh game library to detect newly installed games
-- [ ] **GAME-05**: User can remove a manually added game from the library
-- [ ] **GAME-06**: User can visually distinguish auto-detected Steam games from manually added games
+- [x] **GAME-04**: User can refresh game library to detect newly installed games
+- [x] **GAME-05**: User can remove a manually added game from the library
+- [x] **GAME-06**: User can visually distinguish auto-detected Steam games from manually added games
 
 ### Hardware Detection
 
@@ -25,14 +25,18 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **HDWR-05**: User can manually set monitor Hz/resolution at any time, treated as a first-class input rather than a fallback
 - [x] **HDWR-06**: User can view a system diagnostics summary on the home screen
 
-### Tool Detection
+### Tool Integration & Deployment Management
 
-- [ ] **TOOL-01**: App detects if OptiScaler is installed and shows its version/status
-- [ ] **TOOL-02**: App detects if Special K is installed and shows its version/status
-- [ ] **TOOL-03**: App detects if Lossless Scaling is already installed by the user via Steam (app ID 993090) — detection only, no redistribution, bundling, or bypass
-- [ ] **TOOL-04**: User can view a tools overview showing all detected/missing tools
-- [ ] **TOOL-05**: App provides official download/install links for missing tools (never redistributing)
-- [ ] **TOOL-06**: App shows how each tool was detected (Steam install, manual path, or not found) with clear provenance
+- [ ] **TOOL-01**: App models supported tools by integration type instead of a single generic installed/missing state
+- [ ] **TOOL-02**: App can detect whether OptiScaler is deployed for a specific game and show the deployed version/build/channel when identifiable
+- [ ] **TOOL-03**: App supports OptiScaler official acquisition plus manual local archive/path registration with explicit provenance
+- [ ] **TOOL-04**: App can detect or register Special K as a global integration and show its version/status
+- [ ] **TOOL-05**: App supports Special K official acquisition and any officially supported experimental/update channel without defaulting to unofficial mirrors
+- [ ] **TOOL-06**: App detects Lossless Scaling via the user's Steam library (app ID 993090) only — no redistribution, bundling, bypass, or unofficial acquisition path
+- [ ] **TOOL-07**: User can view a tools overview that distinguishes global tool state, local source registration, and per-game deployment state
+- [ ] **TOOL-08**: App records and shows release channel/build provenance where relevant (for example stable vs nightly/rolling)
+- [ ] **TOOL-09**: App records and shows official source/compliance state for every tool record (official source, user-supplied local source, licensed Steam detection, or unknown/unverified)
+- [ ] **TOOL-10**: Tools UI shows name, author, version/build, source URL, license/compliance notes, and release channel where relevant for all supported third-party tools
 
 ### Recommendations
 
@@ -135,11 +139,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HDWR-04 | Phase 2 | Complete |
 | HDWR-05 | Phase 2 | Complete |
 | HDWR-06 | Phase 2 | Complete |
-| GAME-01 | Phase 3 | Pending |
-| GAME-02 | Phase 3 | Pending |
-| GAME-04 | Phase 3 | Pending |
-| GAME-05 | Phase 3 | Pending |
-| GAME-06 | Phase 3 | Pending |
+| GAME-01 | Phase 3 | Complete |
+| GAME-02 | Phase 3 | Complete |
+| GAME-04 | Phase 3 | Complete |
+| GAME-05 | Phase 3 | Complete |
+| GAME-06 | Phase 3 | Complete |
 | GAME-03 | Phase 4 | Pending |
 | META-01 | Phase 4 | Pending |
 | META-02 | Phase 4 | Pending |
@@ -149,6 +153,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-04 | Phase 5 | Pending |
 | TOOL-05 | Phase 5 | Pending |
 | TOOL-06 | Phase 5 | Pending |
+| TOOL-07 | Phase 5 | Pending |
+| TOOL-08 | Phase 5 | Pending |
+| TOOL-09 | Phase 5 | Pending |
+| TOOL-10 | Phase 5 | Pending |
 | RECO-01 | Phase 6 | Pending |
 | RECO-02 | Phase 6 | Pending |
 | RECO-03 | Phase 6 | Pending |
@@ -176,4 +184,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-03*
-*Last updated: 2026-04-03 after user approval with adjustments*
+*Last updated: 2026-04-03 after Phase 3 game detection completion*

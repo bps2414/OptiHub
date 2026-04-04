@@ -14,9 +14,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & App Shell** - Tauri + React scaffold, premium dark theme, bilingual sidebar shell, and IPC foundation
 - [x] **Phase 2: Hardware Detection** - CPU, GPU, RAM, VRAM, monitor detection with manual overrides
-- [ ] **Phase 3: Game Detection** - Steam library parsing, manual registration, game library management
+- [x] **Phase 3: Game Detection** - Steam library parsing, manual registration, game library management
 - [ ] **Phase 4: Game Library UI & Metadata** - Game library views, detail pages, Steam metadata, cover art
-- [ ] **Phase 5: Tool Detection & Management** - OptiScaler, Special K, Lossless Scaling detection with provenance
+- [ ] **Phase 5: Tool Integration & Deployment Management** - Tool-specific integration models, official acquisition, provenance, and per-game deployment visibility
 - [ ] **Phase 6: Recommendation Engine** - Tool recommendations per game with confidence levels and explanations
 - [ ] **Phase 7: Preset System** - Quality/Balanced/Performance presets with hardware-aware adaptation
 - [ ] **Phase 8: Apply & Restore** - Backup engine, execution plans, config application, rollback system
@@ -73,8 +73,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Rust Steam detection (registry lookup, libraryfolders.vdf, appmanifest_*.acf parsing)
-- [ ] 03-02: Manual game registration, library management, SQLite persistence
+- [x] 03-01: Rust Steam detection (registry lookup, libraryfolders.vdf, appmanifest_*.acf parsing)
+- [x] 03-02: Manual game registration, library management, SQLite persistence
 
 ### Phase 4: Game Library UI & Metadata
 **Goal**: Present the game library with rich UI (grid/list views), game detail pages, and Steam metadata (cover art, descriptions)
@@ -92,22 +92,23 @@ Plans:
 - [ ] 04-01: Game library UI (grid/list views, search, filtering, Steam vs manual badges)
 - [ ] 04-02: Metadata fetching (Steam/SteamDB), caching, game detail page
 
-### Phase 5: Tool Detection & Management
-**Goal**: Detect OptiScaler, Special K, and Lossless Scaling installations with clear provenance, show tool status and official links
-**Depends on**: Phase 1
-**Requirements**: TOOL-01, TOOL-02, TOOL-03, TOOL-04, TOOL-05, TOOL-06
+### Phase 5: Tool Integration & Deployment Management
+**Goal**: Model each supported tool according to its real integration workflow: OptiScaler as a per-game deployment-capable tool, Special K as a mostly global integration, and Lossless Scaling as a licensed Steam-only detection path, all with clear source, channel, version, and compliance state
+**Depends on**: Phase 3
+**Requirements**: TOOL-01, TOOL-02, TOOL-03, TOOL-04, TOOL-05, TOOL-06, TOOL-07, TOOL-08, TOOL-09, TOOL-10
 **Success Criteria** (what must be TRUE):
-  1. OptiScaler installation detected with version/status shown
-  2. Special K installation detected with version/status shown
-  3. Lossless Scaling detected via Steam library (app ID 993090) only — never redistributed
-  4. Tools overview page shows all tools with detected/missing status
-  5. Each tool shows how it was detected (Steam install, manual path, not found)
-  6. Missing tools show official download/install links
+  1. Tools page distinguishes integration models instead of flattening everything into generic installed/missing status
+  2. OptiScaler can be tracked per game, including whether it is already deployed near the target executable and which build/channel is deployed
+  3. OptiScaler supports official acquisition plus user-supplied local archive/path registration with explicit provenance and compliance state
+  4. Special K can be tracked as a global integration with version/status, official acquisition path, and supported release channel visibility
+  5. Lossless Scaling is detected via Steam library (app ID 993090) only as a licensed local integration — never bundled, redistributed, or sourced from unofficial mirrors by default
+  6. Tools overview shows global install state, local source registration, and per-game deployment state as separate concepts
+  7. Every tool record exposes official source, credits, version/build, license/compliance notes, and release channel where relevant
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: Rust tool detection engine (OptiScaler, Special K, Lossless Scaling scanners)
-- [ ] 05-02: Tools management UI page with provenance indicators and official links
+- [ ] 05-01: Rust tool integration registry (global installs, local sources, per-game deployments, channel/compliance metadata)
+- [ ] 05-02: Tools management UI page with official acquisition flows, provenance/compliance indicators, and per-game deployment visibility
 
 ### Phase 6: Recommendation Engine
 **Goal**: Build the rules engine that maps game + hardware + available tools to a recommendation with confidence level and explanation
@@ -179,15 +180,15 @@ Plans:
 **Execution Order:**
 Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
 
-Note: Phases 2, 3, and 5 all depend only on Phase 1 and can potentially run in parallel.
+Note: Phase 2 depends only on Phase 1, while Phase 5 now depends on Phase 3 for game-aware deployment state.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & App Shell | 3/3 | Complete | 2026-04-03 |
 | 2. Hardware Detection | 2/2 | Complete | 2026-04-03 |
-| 3. Game Detection | 0/2 | Not started | - |
+| 3. Game Detection | 2/2 | Complete | 2026-04-03 |
 | 4. Game Library UI & Metadata | 0/2 | Not started | - |
-| 5. Tool Detection & Management | 0/2 | Not started | - |
+| 5. Tool Integration & Deployment Management | 0/2 | Not started | - |
 | 6. Recommendation Engine | 0/2 | Not started | - |
 | 7. Preset System | 0/2 | Not started | - |
 | 8. Apply & Restore | 0/3 | Not started | - |
