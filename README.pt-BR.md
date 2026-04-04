@@ -45,6 +45,7 @@ Com o OptiHub, isso vira um fluxo guiado de 3 cliques.
 - Lê a biblioteca do Steam via registro do Windows e arquivos VDF/ACF
 - Suporte a registro manual de jogos fora da Steam (executável customizado)
 - Distinção visual entre jogos detectados automaticamente e adicionados manualmente
+- Biblioteca de gestão compacta com atualização manual e fluxo nativo de seleção de `.exe`
 
 ### ✅ Perfil de hardware
 - Detecta CPU (modelo, núcleos, threads)
@@ -184,7 +185,7 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 |------|--------|
 | 1. Foundation & App Shell | ✅ Completa |
 | 2. Detecção de Hardware | ✅ Completa |
-| 3. Detecção de Jogos | ⏳ Planejada |
+| 3. Detecção de Jogos | ✅ Completa |
 | 4. UI da Biblioteca | ⏳ Planejada |
 | 5. Detecção de Ferramentas | ⏳ Planejada |
 | 6. Motor de Recomendações | ⏳ Planejada |
@@ -192,7 +193,7 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 | 8. Aplicar & Restaurar | ⏳ Planejada |
 | 9. Compliance & Polish | ⏳ Planejada |
 
-Status atual: Fase 2 concluida. Proxima etapa: Fase 3 - Deteccao de Jogos.
+Status atual: Fase 3 concluída. Próxima etapa: Fase 4 - UI da Biblioteca & Metadados.
 
 ---
 
