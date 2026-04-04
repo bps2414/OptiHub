@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -60,6 +61,42 @@ describe('LibraryPage', () => {
     expect(tauriMocks.getGameLibraryMock).toHaveBeenCalledTimes(1)
     expect(screen.getByRole('button', { name: 'Refresh library' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Add game' })).toBeInTheDocument()
+  })
+
+  it('shows visible refresh feedback while the library is refreshing', async () => {
+    const user = userEvent.setup()
+    let resolveRefresh: ((value: unknown) => void) | undefined
+    tauriMocks.getGameLibraryMock.mockResolvedValue({
+      entries: [],
+      steamLibraryPaths: [],
+      scannedAt: '1712274000',
+    })
+    tauriMocks.refreshGameLibraryMock.mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveRefresh = resolve
+        }),
+    )
+
+    render(
+      <MemoryRouter>
+        <I18nProvider initialLocale="en">
+          <LibraryPage />
+        </I18nProvider>
+      </MemoryRouter>,
+    )
+
+    await screen.findByText('No games detected yet')
+
+    await user.click(screen.getByRole('button', { name: 'Refresh library' }))
+
+    expect(screen.getAllByText('Refreshing library...').length).toBeGreaterThan(0)
+
+    resolveRefresh?.({
+      entries: [],
+      steamLibraryPaths: [],
+      scannedAt: '1712274001',
+    })
   })
 
   it('renders the compact management list when entries exist', async () => {

@@ -74,6 +74,7 @@ None.
 Recommended but non-blocking:
 - Real Windows Steam install with at least one secondary library path
 - Native `.exe` picker interaction inside the desktop shell
+- Retest Library refresh visual feedback and native picker behavior after the follow-up UAT fixes
 
 These are recommended environment checks, not blockers for this report because the backend, frontend, and packaged Tauri build all passed.
 

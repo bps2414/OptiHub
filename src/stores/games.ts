@@ -21,6 +21,8 @@ interface GamesState {
   error: AppError | null
   manualExecutablePath: string | null
   isManualFormOpen: boolean
+  isPickingExecutable: boolean
+  lastAction: 'idle' | 'load' | 'refresh' | 'manual'
   loadLibrary: () => Promise<void>
   refreshLibrary: () => Promise<void>
   beginManualRegistration: () => Promise<void>
@@ -31,16 +33,18 @@ interface GamesState {
 
 async function runLibraryLoad(
   request: () => Promise<{ entries: GameLibraryEntry[] }>,
+  action: 'load' | 'refresh',
   set: (updater: Partial<GamesState> | ((state: GamesState) => GamesState | Partial<GamesState>)) => void,
 ) {
   set((state) =>
     state.loadState === 'loading'
       ? state
-      : {
-          ...state,
-          loadState: 'loading',
-          error: null,
-        },
+          : {
+              ...state,
+              loadState: 'loading',
+              lastAction: action,
+              error: null,
+            },
   )
 
   try {
@@ -49,11 +53,13 @@ async function runLibraryLoad(
     set({
       entries: snapshot.entries,
       loadState: 'ready',
+      lastAction: action,
       error: null,
     })
   } catch (error) {
     set({
       loadState: 'error',
+      lastAction: action,
       error: error as AppError,
     })
   }
@@ -65,29 +71,49 @@ export const useGamesStore = create<GamesState>()((set, get) => ({
   error: null,
   manualExecutablePath: null,
   isManualFormOpen: false,
+  isPickingExecutable: false,
+  lastAction: 'idle',
   async loadLibrary() {
-    await runLibraryLoad(getGameLibrary, set)
+    await runLibraryLoad(getGameLibrary, 'load', set)
   },
   async refreshLibrary() {
-    await runLibraryLoad(refreshGameLibrary, set)
+    await runLibraryLoad(refreshGameLibrary, 'refresh', set)
   },
   async beginManualRegistration() {
-    const executablePath = await pickGameExecutable()
-
-    if (!executablePath) {
-      return
-    }
-
     set({
-      manualExecutablePath: executablePath,
-      isManualFormOpen: true,
+      isPickingExecutable: true,
+      lastAction: 'manual',
       error: null,
     })
+
+    try {
+      const executablePath = await pickGameExecutable()
+
+      if (!executablePath) {
+        set({
+          isPickingExecutable: false,
+        })
+        return
+      }
+
+      set({
+        manualExecutablePath: executablePath,
+        isManualFormOpen: true,
+        isPickingExecutable: false,
+        error: null,
+      })
+    } catch (error) {
+      set({
+        isPickingExecutable: false,
+        error: error as AppError,
+      })
+    }
   },
   cancelManualRegistration() {
     set({
       manualExecutablePath: null,
       isManualFormOpen: false,
+      isPickingExecutable: false,
     })
   },
   async saveManualGame(input) {
@@ -99,6 +125,7 @@ export const useGamesStore = create<GamesState>()((set, get) => ({
     set({
       manualExecutablePath: null,
       isManualFormOpen: false,
+      isPickingExecutable: false,
     })
 
     await get().refreshLibrary()

@@ -56,6 +56,8 @@ export interface MessageCatalog {
       toolbar: {
         refresh: string
         addGame: string
+        refreshing: string
+        pickerOpening: string
       }
       table: {
         name: string
@@ -76,6 +78,7 @@ export interface MessageCatalog {
       }
       emptyState: string
       libraryRefreshed: string
+      pickerFailed: string
     }
     games: PageCopy & {
       managementHint: string
@@ -184,6 +187,8 @@ export const messages: Record<Locale, MessageCatalog> = {
         toolbar: {
           refresh: 'Refresh library',
           addGame: 'Add game',
+          refreshing: 'Refreshing library...',
+          pickerOpening: 'Opening executable picker...',
         },
         table: {
           name: 'Name',
@@ -204,6 +209,7 @@ export const messages: Record<Locale, MessageCatalog> = {
         },
         emptyState: 'No games detected yet',
         libraryRefreshed: 'Library refreshed',
+        pickerFailed: 'Could not open the executable picker',
       },
       games: {
         eyebrow: 'Games',
@@ -339,6 +345,8 @@ export const messages: Record<Locale, MessageCatalog> = {
         toolbar: {
           refresh: 'Atualizar biblioteca',
           addGame: 'Adicionar jogo',
+          refreshing: 'Atualizando biblioteca...',
+          pickerOpening: 'Abrindo seletor de executável...',
         },
         table: {
           name: 'Nome',
@@ -359,6 +367,7 @@ export const messages: Record<Locale, MessageCatalog> = {
         },
         emptyState: 'Nenhum jogo detectado ainda',
         libraryRefreshed: 'Biblioteca atualizada',
+        pickerFailed: 'Não foi possível abrir o seletor de executável',
       },
       games: {
         eyebrow: 'Jogos',

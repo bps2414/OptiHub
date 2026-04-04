@@ -13,6 +13,8 @@ export function LibraryPage() {
   const error = useGamesStore((store) => store.error)
   const manualExecutablePath = useGamesStore((store) => store.manualExecutablePath)
   const isManualFormOpen = useGamesStore((store) => store.isManualFormOpen)
+  const isPickingExecutable = useGamesStore((store) => store.isPickingExecutable)
+  const lastAction = useGamesStore((store) => store.lastAction)
   const loadLibrary = useGamesStore((store) => store.loadLibrary)
   const refreshLibrary = useGamesStore((store) => store.refreshLibrary)
   const beginManualRegistration = useGamesStore((store) => store.beginManualRegistration)
@@ -35,23 +37,31 @@ export function LibraryPage() {
       <div className="game-library-toolbar">
         <button
           className="form-select"
+          disabled={loadState === 'loading'}
           onClick={() => {
             void refreshLibrary()
           }}
           type="button"
         >
-          {page.toolbar.refresh}
+          {loadState === 'loading' && lastAction === 'refresh'
+            ? page.toolbar.refreshing
+            : page.toolbar.refresh}
         </button>
         <button
           className="form-select"
+          disabled={isPickingExecutable}
           onClick={() => {
             void beginManualRegistration()
           }}
           type="button"
         >
-          {page.toolbar.addGame}
+          {isPickingExecutable ? page.toolbar.pickerOpening : page.toolbar.addGame}
         </button>
       </div>
+
+      {loadState === 'loading' && lastAction === 'refresh' ? (
+        <p className="page-note">{page.toolbar.refreshing}</p>
+      ) : null}
 
       {isManualFormOpen && manualExecutablePath ? (
         <ManualGameRegistrationForm
@@ -62,7 +72,9 @@ export function LibraryPage() {
       ) : null}
 
       {error ? (
-        <p className="page-note">{error.message}</p>
+        <p className="page-note">
+          {lastAction === 'manual' ? page.pickerFailed : error.message}
+        </p>
       ) : null}
 
       {loadState === 'ready' && entries.length === 0 ? (

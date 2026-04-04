@@ -45,6 +45,7 @@ completed: 2026-04-03
 - Added separate SQLite persistence for manual registrations plus backend reconciliation that preserves original user-added provenance while exposing effective Steam source.
 - Added native `.exe` picking, a compact management-first library table, source badges, manual registration confirmation, and a library-focused `/games` handoff message.
 - Added backend `manual_registry` tests and focused frontend tests covering LibraryPage, source-badge rendering, and manual registration UX.
+- Added follow-up UX hardening after UAT: visible refresh feedback in Library and explicit dialog permission / error handling for the native executable picker.
 
 ## Task Commits
 
@@ -83,6 +84,7 @@ None - the revised plan executed as written.
 
 - Manual/Steam reconciliation initially failed because the manual install root was using the immediate parent directory of the executable. This was corrected with a small install-root heuristic and locked in with backend tests.
 - Vitest module mocking for the LibraryPage suite needed hoisted mocks because the tauri wrapper mock is imported through the Zustand store module.
+- User UAT found two runtime UX issues after the first build: the refresh action had no visible feedback and the native picker was not opening because the dialog permission was missing from the default capability. Both were fixed and the desktop app was rebuilt for retest.
 
 ## User Setup Required
 

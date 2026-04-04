@@ -45,7 +45,7 @@ Com o OptiHub, isso vira um fluxo guiado de 3 cliques.
 - Lê a biblioteca do Steam via registro do Windows e arquivos VDF/ACF
 - Suporte a registro manual de jogos fora da Steam (executável customizado)
 - Distinção visual entre jogos detectados automaticamente e adicionados manualmente
-- Biblioteca de gestão compacta com atualização manual e fluxo nativo de seleção de `.exe`
+- Biblioteca de gestão compacta com atualização manual, feedback visual de refresh e fluxo nativo de seleção de `.exe`
 
 ### ✅ Perfil de hardware
 - Detecta CPU (modelo, núcleos, threads)

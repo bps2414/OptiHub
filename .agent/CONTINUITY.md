@@ -28,6 +28,7 @@
 - 2026-04-03T05:00:00Z [USER] Requested that any further Phase 1 validation be skipped; follow-up work in this turn was limited to syncing `.planning/*`, READMEs, and continuity/docs with the bilingual shell outcome.
 
 [DISCOVERIES]
+- 2026-04-04T00:11:36Z [USER] UAT da Fase 3 mostrou duas lacunas de produto: refresh sem feedback visual e picker nativo sem permissão/caminho de erro explícito; ambos foram corrigidos antes do reteste.
 - 2026-04-03T23:53:17Z [CODE] Steam/manual reconciliation needed an install-root heuristic that strips common executable subdirectories like `bin`, `win64`, and `game`; using the raw parent directory of the `.exe` was not sufficient for Steam matches.
 - 2026-04-04T02:26:30Z [CODE] The old Phase 5 docs depended only on Phase 1 and assumed generic install detection, but OptiScaler's requested workflow needs Phase 3 game records to represent per-game deployment state truthfully.
 - 2026-04-03T23:11:10Z [CODE] Phase 3 needs a native executable picker for trustworthy manual registration; the planning artifacts therefore standardize on the Tauri dialog plugin instead of browser file inputs.
@@ -40,6 +41,7 @@
 - 2026-04-03T18:52:12Z [TOOL] `wmi 0.18.4` only compiled cleanly in this workspace after downgrading `sysinfo` to `0.37.2`; `sysinfo 0.38.x` introduced a `windows_core` split that blocked the backend before the new tests ran.
 
 [OUTCOMES]
+- 2026-04-04T00:11:36Z [CODE] Follow-up pós-UAT da Fase 3 adicionou feedback visual de refresh na Library e liberou/capturou corretamente o picker nativo de `.exe`; um novo build desktop foi gerado para reteste dos itens 3-7.
 - 2026-04-03T23:53:17Z [CODE] Phase 3 now delivers a management-first game library with Steam registry/VDF/ACF detection, native manual `.exe` registration with confirmation, refresh/remove flows, Steam/manual provenance badges, and separate manual-registration persistence that preserves user-added provenance during Steam reconciliation.
 - 2026-04-04T02:26:30Z [CODE] Phase 5 is now context-ready under `05-tool-integration-deployment-management` with updated roadmap/requirements language and explicit boundaries for global installs, local sources, per-game deployment state, release channels, and compliance/provenance.
 - 2026-04-03T23:11:10Z [CODE] Phase 3 is now plan-ready for execution with a wave-1 backend Steam scan plan and a wave-2 persistence/UI management plan, plus matching validation strategy and internal research.
