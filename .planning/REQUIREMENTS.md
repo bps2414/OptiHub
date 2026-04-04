@@ -18,12 +18,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Hardware Detection
 
-- [ ] **HDWR-01**: User can view detected GPU model and VRAM
-- [ ] **HDWR-02**: User can view detected CPU model and core count
-- [ ] **HDWR-03**: User can view detected RAM amount
-- [ ] **HDWR-04**: User can view detected monitor resolution and refresh rate (best-effort auto-detection with manual override as a normal, expected flow)
-- [ ] **HDWR-05**: User can manually set monitor Hz/resolution at any time, treated as a first-class input rather than a fallback
-- [ ] **HDWR-06**: User can view a system diagnostics summary on the home screen
+- [x] **HDWR-01**: User can view detected GPU model and VRAM
+- [x] **HDWR-02**: User can view detected CPU model and core count
+- [x] **HDWR-03**: User can view detected RAM amount
+- [x] **HDWR-04**: User can view detected monitor resolution and refresh rate (best-effort auto-detection with manual override as a normal, expected flow)
+- [x] **HDWR-05**: User can manually set monitor Hz/resolution at any time, treated as a first-class input rather than a fallback
+- [x] **HDWR-06**: User can view a system diagnostics summary on the home screen
 
 ### Tool Detection
 
@@ -129,12 +129,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UIUX-02 | Phase 1 | Complete |
 | UIUX-05 | Phase 1 | Complete |
 | UIUX-04 | Phase 1 | Complete |
-| HDWR-01 | Phase 2 | Pending |
-| HDWR-02 | Phase 2 | Pending |
-| HDWR-03 | Phase 2 | Pending |
-| HDWR-04 | Phase 2 | Pending |
-| HDWR-05 | Phase 2 | Pending |
-| HDWR-06 | Phase 2 | Pending |
+| HDWR-01 | Phase 2 | Complete |
+| HDWR-02 | Phase 2 | Complete |
+| HDWR-03 | Phase 2 | Complete |
+| HDWR-04 | Phase 2 | Complete |
+| HDWR-05 | Phase 2 | Complete |
+| HDWR-06 | Phase 2 | Complete |
 | GAME-01 | Phase 3 | Pending |
 | GAME-02 | Phase 3 | Pending |
 | GAME-04 | Phase 3 | Pending |

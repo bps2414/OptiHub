@@ -52,6 +52,9 @@ Com o OptiHub, isso vira um fluxo guiado de 3 cliques.
 - Detecta RAM total do sistema
 - Detecta resolução e taxa de atualização dos monitores (com fallback manual)
 - Painel de diagnóstico com resumo completo do sistema
+- Cards agrupados de Diagnósticos para CPU, GPU, Memória e Display
+- Override manual inline para resolução e taxa de atualização do monitor
+- Fallback para VRAM dedicada mais fiel e nomes de display mais limpos no shell
 
 ### ✅ Detecção de ferramentas de otimização
 Detecta instalações existentes de:
@@ -180,7 +183,7 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 | Fase | Status |
 |------|--------|
 | 1. Foundation & App Shell | ✅ Completa |
-| 2. Detecção de Hardware | ⏳ Planejada |
+| 2. Detecção de Hardware | ✅ Completa |
 | 3. Detecção de Jogos | ⏳ Planejada |
 | 4. UI da Biblioteca | ⏳ Planejada |
 | 5. Detecção de Ferramentas | ⏳ Planejada |
@@ -189,7 +192,7 @@ Fase 9: Compliance & Polish            → Créditos, licenças, UX final
 | 8. Aplicar & Restaurar | ⏳ Planejada |
 | 9. Compliance & Polish | ⏳ Planejada |
 
-Status atual: Fase 1 concluida, incluindo a base bilingue do shell (English + Portugues do Brasil). Proxima etapa: Fase 2 - Deteccao de Hardware.
+Status atual: Fase 2 concluida. Proxima etapa: Fase 3 - Deteccao de Jogos.
 
 ---
 

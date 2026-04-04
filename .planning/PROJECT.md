@@ -14,13 +14,13 @@ The user can optimize any detected game with one guided flow — see what tool t
 
 - [x] Premium dark UI with sidebar navigation, focus/hover states, and bilingual shell support (English + Brazilian Portuguese)
   Validated in Phase 1: Foundation & App Shell
+- [x] Hardware snapshot on Diagnostics and Home with CPU, GPU, RAM, display data, and inline manual display override
+  Validated in Phase 2: Hardware Detection
 
 ### Active
 
 - [ ] Detect games installed via Steam library
 - [ ] Allow manual game/executable registration
-- [ ] Detect GPU, CPU, RAM, VRAM
-- [ ] Detect monitor Hz/resolution with manual fallback
 - [ ] Recommend optimization tool per game with confidence level (safe/limited/experimental)
 - [ ] Explain recommendation rationale in user-friendly language
 - [ ] Provide Quality/Balanced/Performance presets per game
@@ -93,6 +93,7 @@ The user can optimize any detected game with one guided flow — see what tool t
 | Tauri over Electron | Smaller binary, better Windows integration, Rust backend for system access | — Pending |
 | React + Tailwind for frontend | User preference, large ecosystem, rapid UI development | ✓ Phase 1 scaffolded and verified |
 | Lightweight in-repo i18n foundation | Keep localization offline-first and simple while blocking new hardcoded shell strings | ✓ Phase 1 bilingual shell gap closed |
+| Frontend-persisted display override | Deliver monitor override in Phase 2 without inventing a broader backend settings subsystem too early | ✓ Phase 2 shipped and verified |
 | Steam as primary game source | Largest PC game platform, well-documented library structure | — Pending |
 | No Magpie integration | Explicit project owner decision | ✓ Good |
 | Special K replaces Magpie role | Broader functionality, open-source, active development | — Pending |
@@ -131,4 +132,4 @@ After any phase completion or task that changes user-facing functionality:
 See `.planning/CONVENTIONS.md` for the full README sync policy and checklist.
 
 ---
-*Last updated: 2026-04-03 — Phase 1 bilingual shell gap closed and docs synced*
+*Last updated: 2026-04-03 — Phase 2 hardware detection complete and docs synced*

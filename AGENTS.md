@@ -76,6 +76,15 @@ OptiHub is a Windows-first, offline-first desktop application that centralizes P
 
 Full conventions: `.planning/CONVENTIONS.md`
 
+### Agent Language Policy
+
+For work inside this repository:
+
+- User-facing responses must be written in Brazilian Portuguese (`pt-BR`)
+- Intermediary progress updates / commentary must also be written in Brazilian Portuguese (`pt-BR`)
+- Source code, identifiers, commit messages, and inline code comments must remain in English unless the user explicitly requests otherwise
+- When editing or generating documentation intended for end users, match the target document language (`README.md` in English, `README.pt-BR.md` in pt-BR)
+
 ### README Sync (mandatory after every phase)
 
 OptiHub maintains two public READMEs: `README.md` (EN) and `README.pt-BR.md` (PT-BR).

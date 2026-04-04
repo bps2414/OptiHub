@@ -13,7 +13,7 @@ OptiHub's MVP is built in 9 phases following a dependency-driven order: foundati
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & App Shell** - Tauri + React scaffold, premium dark theme, bilingual sidebar shell, and IPC foundation
-- [ ] **Phase 2: Hardware Detection** - CPU, GPU, RAM, VRAM, monitor detection with manual overrides
+- [x] **Phase 2: Hardware Detection** - CPU, GPU, RAM, VRAM, monitor detection with manual overrides
 - [ ] **Phase 3: Game Detection** - Steam library parsing, manual registration, game library management
 - [ ] **Phase 4: Game Library UI & Metadata** - Game library views, detail pages, Steam metadata, cover art
 - [ ] **Phase 5: Tool Detection & Management** - OptiScaler, Special K, Lossless Scaling detection with provenance
@@ -57,8 +57,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Rust hardware detection commands (sysinfo, wmi, monitor enumeration)
-- [ ] 02-02: Diagnostics UI page and home screen hardware summary widget
+- [x] 02-01: Rust hardware detection commands (sysinfo, wmi, monitor enumeration)
+- [x] 02-02: Diagnostics UI page and home screen hardware summary widget
 
 ### Phase 3: Game Detection
 **Goal**: Detect installed Steam games via registry + VDF/ACF parsing, support manual game registration, and manage the game library
@@ -184,7 +184,7 @@ Note: Phases 2, 3, and 5 all depend only on Phase 1 and can potentially run in p
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & App Shell | 3/3 | Complete | 2026-04-03 |
-| 2. Hardware Detection | 0/2 | Not started | - |
+| 2. Hardware Detection | 2/2 | Complete | 2026-04-03 |
 | 3. Game Detection | 0/2 | Not started | - |
 | 4. Game Library UI & Metadata | 0/2 | Not started | - |
 | 5. Tool Detection & Management | 0/2 | Not started | - |
