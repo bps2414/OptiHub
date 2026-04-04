@@ -19,8 +19,9 @@ describe('GameLibraryTable', () => {
                 installDir: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive',
                 source: 'steam',
                 steamAppId: 730,
+                relatedSteamAppId: null,
                 removable: false,
-                userAdded: true,
+                userAdded: false,
                 lastSeenAt: '1712274000',
               },
               {
@@ -30,6 +31,7 @@ describe('GameLibraryTable', () => {
                 installDir: 'D:/Games/Celeste',
                 source: 'manual',
                 steamAppId: null,
+                relatedSteamAppId: 730,
                 removable: true,
                 userAdded: true,
                 lastSeenAt: '1712274000',
@@ -43,7 +45,9 @@ describe('GameLibraryTable', () => {
 
     expect(screen.getAllByText('Steam').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Manual').length).toBeGreaterThan(0)
-    expect(screen.getAllByText('Added manually').length).toBeGreaterThan(0)
+    expect(screen.getByText('Linked to Steam detection')).toBeInTheDocument()
+    expect(screen.getByText('Detected via Steam')).toBeInTheDocument()
+    expect(screen.queryByText('Added manually')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
   })
 })

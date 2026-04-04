@@ -105,11 +105,24 @@ describe('LibraryPage', () => {
         {
           id: 'steam:730',
           displayName: 'Counter-Strike 2',
-          executablePath: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive/game/bin/win64/cs2.exe',
+          executablePath: null,
           installDir: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive',
           source: 'steam',
           steamAppId: 730,
+          relatedSteamAppId: null,
           removable: false,
+          userAdded: false,
+          lastSeenAt: '1712274000',
+        },
+        {
+          id: 'manual:counter-strike-2',
+          displayName: 'Counter-Strike 2 Manual',
+          executablePath: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive/game/bin/win64/cs2.exe',
+          installDir: 'D:/SteamLibrary/steamapps/common/Counter-Strike Global Offensive',
+          source: 'manual',
+          steamAppId: null,
+          relatedSteamAppId: 730,
+          removable: true,
           userAdded: true,
           lastSeenAt: '1712274000',
         },
@@ -129,6 +142,7 @@ describe('LibraryPage', () => {
     await screen.findByText('Counter-Strike 2')
 
     expect(screen.getByText('Install path')).toBeInTheDocument()
-    expect(screen.getByText('Added manually')).toBeInTheDocument()
+    expect(screen.getByText('Counter-Strike 2 Manual')).toBeInTheDocument()
+    expect(screen.getByText('Linked to Steam detection')).toBeInTheDocument()
   })
 })

@@ -30,6 +30,7 @@ pub struct GameLibraryEntry {
     pub install_dir: String,
     pub source: GameSource,
     pub steam_app_id: Option<u32>,
+    pub related_steam_app_id: Option<u32>,
     pub removable: bool,
     pub user_added: bool,
     pub last_seen_at: Option<String>,
@@ -485,22 +486,25 @@ fn scan_steam_snapshot() -> SteamScanSnapshot {
 fn build_steam_entry(
     steam_entry: &SteamScanEntry,
     scanned_at: &str,
-    manual_registration: Option<&ManualGameRegistration>,
 ) -> GameLibraryEntry {
     GameLibraryEntry {
         id: format!("steam:{}", steam_entry.app_id),
         display_name: steam_entry.display_name.clone(),
-        executable_path: manual_registration.map(|registration| registration.executable_path.clone()),
+        executable_path: None,
         install_dir: steam_entry.install_dir.to_string_lossy().to_string(),
         source: GameSource::Steam,
         steam_app_id: Some(steam_entry.app_id),
+        related_steam_app_id: None,
         removable: false,
-        user_added: manual_registration.is_some(),
+        user_added: false,
         last_seen_at: Some(scanned_at.to_string()),
     }
 }
 
-fn build_manual_entry(registration: &ManualGameRegistration) -> GameLibraryEntry {
+fn build_manual_entry(
+    registration: &ManualGameRegistration,
+    related_steam_app_id: Option<u32>,
+) -> GameLibraryEntry {
     GameLibraryEntry {
         id: format!("manual:{}", registration.id),
         display_name: registration.display_name.clone(),
@@ -508,49 +512,45 @@ fn build_manual_entry(registration: &ManualGameRegistration) -> GameLibraryEntry
         install_dir: registration.install_dir.clone(),
         source: GameSource::Manual,
         steam_app_id: None,
+        related_steam_app_id,
         removable: true,
         user_added: true,
         last_seen_at: Some(registration.updated_at.clone()),
     }
 }
 
+// Steam and manual entries remain independent in the returned snapshot.
 // Steam-side authoritative match key in Phase 3 = normalized install root.
+// install-root matching is used only to attach relationship metadata in Phase 3.
 // manual/manual duplicate prevention = normalized executable path.
 // executable-path matching between Steam and manual rows is a future enhancement only,
 // because Steam rows do not reliably know their `.exe` yet.
+// remove operations remain scoped to manual rows only.
 fn reconcile_library(
     steam_snapshot: SteamScanSnapshot,
     manual_registrations: Vec<ManualGameRegistration>,
 ) -> GameLibrarySnapshot {
-    let mut matched_manual_ids = BTreeSet::new();
-    let mut manual_by_install_root: BTreeMap<String, &ManualGameRegistration> = BTreeMap::new();
-
-    for registration in &manual_registrations {
-        manual_by_install_root
-            .entry(registration.normalized_install_root.clone())
-            .or_insert(registration);
-    }
+    let manual_by_install_root: BTreeMap<String, u32> = manual_registrations
+        .iter()
+        .filter_map(|registration| {
+            steam_snapshot
+                .entries
+                .iter()
+                .find(|entry| entry.normalized_install_root == registration.normalized_install_root)
+                .map(|entry| (registration.normalized_install_root.clone(), entry.app_id))
+        })
+        .collect();
 
     let mut entries = Vec::new();
     for steam_entry in &steam_snapshot.entries {
-        let manual_registration = manual_by_install_root.get(&steam_entry.normalized_install_root).copied();
-        if let Some(registration) = manual_registration {
-            matched_manual_ids.insert(registration.id.clone());
-        }
-
-        entries.push(build_steam_entry(
-            steam_entry,
-            &steam_snapshot.scanned_at,
-            manual_registration,
-        ));
+        entries.push(build_steam_entry(steam_entry, &steam_snapshot.scanned_at));
     }
 
     for registration in manual_registrations {
-        if matched_manual_ids.contains(&registration.id) {
-            continue;
-        }
-
-        entries.push(build_manual_entry(&registration));
+        let related_steam_app_id = manual_by_install_root
+            .get(&registration.normalized_install_root)
+            .copied();
+        entries.push(build_manual_entry(&registration, related_steam_app_id));
     }
 
     entries.sort_by(|left, right| {
@@ -603,7 +603,7 @@ pub async fn register_manual_game(
         ensure_manual_registration_table(&connection)?;
         let now = now_timestamp();
         let registration = insert_manual_registration(&connection, &input, &now)?;
-        Ok(build_manual_entry(&registration))
+        Ok(build_manual_entry(&registration, None))
     })
     .await
     .map_err(|error| AppError::SystemError(error.to_string()))?
@@ -652,11 +652,11 @@ mod tests {
                     )),
                 },
                 "1712274000",
-                None,
             );
 
             assert_eq!(entry.executable_path, None);
             assert_eq!(entry.source, GameSource::Steam);
+            assert_eq!(entry.related_steam_app_id, None);
             assert!(!entry.removable);
             assert!(!entry.user_added);
         }
@@ -795,7 +795,7 @@ mod tests {
         }
 
         #[test]
-        fn reconciliation_matches_manual_and_steam_by_normalized_install_root() {
+        fn reconciliation_keeps_manual_and_steam_entries_separate_for_same_install() {
             let connection = memory_connection();
             let input = ManualGameRegistrationInput {
                 display_name: "Counter-Strike 2".into(),
@@ -821,14 +821,27 @@ mod tests {
 
             let reconciled = reconcile_library(snapshot, manuals);
 
-            assert_eq!(reconciled.entries.len(), 1);
-            assert_eq!(reconciled.entries[0].source, GameSource::Steam);
-            assert_eq!(reconciled.entries[0].steam_app_id, Some(730));
-            assert!(reconciled.entries[0].executable_path.is_some());
+            assert_eq!(reconciled.entries.len(), 2);
+            assert_eq!(
+                reconciled
+                    .entries
+                    .iter()
+                    .filter(|entry| entry.source == GameSource::Steam)
+                    .count(),
+                1
+            );
+            assert_eq!(
+                reconciled
+                    .entries
+                    .iter()
+                    .filter(|entry| entry.source == GameSource::Manual)
+                    .count(),
+                1
+            );
         }
 
         #[test]
-        fn reconciliation_preserves_user_added_provenance_when_promoted_to_steam() {
+        fn manual_rows_can_reference_related_steam_app_id_without_losing_manual_source() {
             let connection = memory_connection();
             let input = ManualGameRegistrationInput {
                 display_name: "Counter-Strike 2".into(),
@@ -854,9 +867,23 @@ mod tests {
 
             let reconciled = reconcile_library(snapshot, manuals);
 
-            assert_eq!(reconciled.entries[0].source, GameSource::Steam);
-            assert!(reconciled.entries[0].user_added);
-            assert!(!reconciled.entries[0].removable);
+            let steam_entry = reconciled
+                .entries
+                .iter()
+                .find(|entry| entry.source == GameSource::Steam)
+                .expect("steam row should exist");
+            let manual_entry = reconciled
+                .entries
+                .iter()
+                .find(|entry| entry.source == GameSource::Manual)
+                .expect("manual row should exist");
+
+            assert_eq!(steam_entry.related_steam_app_id, None);
+            assert_eq!(steam_entry.steam_app_id, Some(730));
+            assert_eq!(manual_entry.related_steam_app_id, Some(730));
+            assert_eq!(manual_entry.source, GameSource::Manual);
+            assert!(manual_entry.user_added);
+            assert!(manual_entry.removable);
         }
 
         #[test]

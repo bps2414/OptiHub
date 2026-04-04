@@ -1,6 +1,8 @@
 # Continuity
 
 [PLANS]
+- 2026-04-04T00:38:25Z [CODE] Executed Phase 3 gap-closure plan `03-03` for the remaining UAT issue; the app now emits separate Steam/manual rows with relationship metadata and is rebuilt for retest.
+- 2026-04-04T00:21:11Z [CODE] Planned Phase 3 gap closure in `03-03-PLAN.md` for the remaining UAT issue: Steam and manual entries must stay separate instead of reconciling into one effective-source row.
 - 2026-04-03T23:53:17Z [CODE] Executed Phase 3 inline across plans `03-01` and `03-02`; verification evidence came from targeted Rust `games::tests`, targeted Vitest library tests, full `pnpm test`, `pnpm lint`, `pnpm build`, full `cargo test`, and `pnpm tauri build`.
 - 2026-04-04T02:26:30Z [USER] Requested a Phase 5 refinement that preserves Phase 3 and replaces the generic tool installed/missing model with tool-specific integration and deployment management.
 - 2026-04-03T23:11:10Z [CODE] Planned Phase 3 with `03-RESEARCH.md`, `03-VALIDATION.md`, `03-01-PLAN.md`, and `03-02-PLAN.md`; requirement coverage for `GAME-01`, `GAME-02`, `GAME-04`, `GAME-05`, and `GAME-06` is explicitly mapped across the two plans.
@@ -11,6 +13,7 @@
 - 2026-04-03T18:52:12Z [CODE] Executed Phase 2 inline across plans `02-01` and `02-02`; verification evidence came from targeted Vitest hardware tests, full `pnpm test`, `pnpm lint`, `pnpm build`, and full `cargo test`.
 
 [DECISIONS]
+- 2026-04-04T00:21:11Z [USER] The remaining accepted gap for Phase 3 is that manual and Steam entries should be independent even when they point to the same install; relationship metadata is acceptable, source promotion is not.
 - 2026-04-03T23:53:17Z [CODE] Phase 3 persists only manual registrations in SQLite and reconciles Steam detections in memory by normalized install root, preserving original user-added provenance separately from effective source.
 - 2026-04-04T02:26:30Z [USER] Renamed future Phase 5 to `Tool Integration & Deployment Management`; OptiScaler is per-game deployment-aware, Special K remains primarily global, Lossless Scaling remains Steam-detect-only, and tools must expose source/channel/compliance metadata without unofficial mirrors by default.
 - 2026-04-04T01:55:00Z [CODE] GPU VRAM now prefers DXGI dedicated video memory over `Win32_VideoController.AdapterRAM`, while display naming hides raw/generic monitor labels instead of surfacing them directly.
@@ -22,6 +25,7 @@
 - 2026-04-03T18:52:12Z [CODE] Kept manual display override in the frontend hardware store for Phase 2 so detected hardware data stays backend-authored while override UX ships without a broader settings subsystem.
 
 [PROGRESS]
+- 2026-04-04T00:21:11Z [CODE] Updated `03-UAT.md` so the remaining Phase 3 gap is now marked `planned` and explicitly points to `03-03-PLAN.md` for execution.
 - 2026-04-04T02:26:30Z [CODE] Updated `ROADMAP.md`, `REQUIREMENTS.md`, `PROJECT.md`, supporting research docs, and created `05-CONTEXT.md` plus `05-DISCUSSION-LOG.md` for the re-scoped Phase 5 without changing Phase 3 artifacts.
 - 2026-04-04T01:51:30Z [USER] Switched the discuss-phase conversation to Portuguese and accepted the recommended refresh model: auto-scan on library open plus explicit manual refresh.
 - 2026-04-03T04:13:35Z [TOOL] `create-tauri-app` was replaced by temp Vite scaffold + `tauri init --ci` because the repo root already contained planning/tooling files and needed an in-place setup path.
@@ -41,6 +45,8 @@
 - 2026-04-03T18:52:12Z [TOOL] `wmi 0.18.4` only compiled cleanly in this workspace after downgrading `sysinfo` to `0.37.2`; `sysinfo 0.38.x` introduced a `windows_core` split that blocked the backend before the new tests ran.
 
 [OUTCOMES]
+- 2026-04-04T00:38:25Z [CODE] The only remaining step for Phase 3 is human retest of UAT item 6 against the new separate-entry model; automated checks and desktop rebuild already passed.
+- 2026-04-04T00:21:11Z [CODE] Phase 3 now has a dedicated gap-closure execution plan focused on replacing the merged Steam/manual row model with separate entries while preserving the rest of the validated library flow.
 - 2026-04-04T00:11:36Z [CODE] Follow-up pós-UAT da Fase 3 adicionou feedback visual de refresh na Library e liberou/capturou corretamente o picker nativo de `.exe`; um novo build desktop foi gerado para reteste dos itens 3-7.
 - 2026-04-03T23:53:17Z [CODE] Phase 3 now delivers a management-first game library with Steam registry/VDF/ACF detection, native manual `.exe` registration with confirmation, refresh/remove flows, Steam/manual provenance badges, and separate manual-registration persistence that preserves user-added provenance during Steam reconciliation.
 - 2026-04-04T02:26:30Z [CODE] Phase 5 is now context-ready under `05-tool-integration-deployment-management` with updated roadmap/requirements language and explicit boundaries for global installs, local sources, per-game deployment state, release channels, and compliance/provenance.

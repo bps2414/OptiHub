@@ -44,6 +44,7 @@ export interface GameLibraryEntry {
   installDir: string
   source: GameSource
   steamAppId: number | null
+  relatedSteamAppId: number | null
   removable: boolean
   userAdded: boolean
   lastSeenAt: string | null

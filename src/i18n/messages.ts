@@ -69,6 +69,7 @@ export interface MessageCatalog {
         manual: string
         detectedViaSteam: string
         addedManually: string
+        linkedToSteamDetection: string
       }
       form: {
         displayName: string
@@ -200,6 +201,7 @@ export const messages: Record<Locale, MessageCatalog> = {
           manual: 'Manual',
           detectedViaSteam: 'Detected via Steam',
           addedManually: 'Added manually',
+          linkedToSteamDetection: 'Linked to Steam detection',
         },
         form: {
           displayName: 'Display name',
@@ -358,6 +360,7 @@ export const messages: Record<Locale, MessageCatalog> = {
           manual: 'Manual',
           detectedViaSteam: 'Detectado via Steam',
           addedManually: 'Adicionado manualmente',
+          linkedToSteamDetection: 'Vinculado à detecção da Steam',
         },
         form: {
           displayName: 'Nome de exibição',

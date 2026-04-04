@@ -30,10 +30,10 @@ export function GameLibraryTable({
             <GameSourceBadge source={entry.source} />
             <span className="game-source-meta">
               {entry.source === 'steam'
-                ? entry.userAdded
-                  ? libraryCopy.table.addedManually
-                  : libraryCopy.table.detectedViaSteam
-                : libraryCopy.table.addedManually}
+                ? libraryCopy.table.detectedViaSteam
+                : entry.relatedSteamAppId !== null
+                  ? libraryCopy.table.linkedToSteamDetection
+                  : libraryCopy.table.addedManually}
             </span>
           </span>
           <span className="game-library-cell">{entry.installDir}</span>
