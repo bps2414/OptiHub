@@ -8,6 +8,7 @@ This repository keeps active product work, active planning, and historical plann
 | --- | --- | --- |
 | `src/`, `public/`, `src-tauri/`, root config files | Active source | Frontend, Tauri backend, assets, and build configuration that define the product |
 | `openspec/` | Active planning | New requirements, implementation checklists, and capability-oriented planning |
+| `docs/` | Active product direction | Product vision, roadmap addenda, phase planning docs, and repository structure map. Read before planning new phases or features. |
 | `.planning/` | Historical planning | Legacy GSD artifacts retained only for migration traceability and old execution context |
 | `.agent/CONTINUITY.md` | Active continuity | Canonical short-form briefing for the current workspace state |
 | `.agent/skills/`, `.agent/workflows/`, `.codex/` | Local-only tooling | Agent helper artifacts that should stay out of version control |
@@ -26,6 +27,11 @@ The intended repository layout is:
 
 - Start product work from `src/`, `src-tauri/`, and the root package/build files.
 - Start planning work from `openspec/README.md` and `openspec/changes/`.
+- **Before planning new phases or features**, read the product direction docs in `docs/`:
+  - `docs/optihub_mvp_revised_vision.md` — revised north star, product shape, support levels
+  - `docs/optihub_roadmap_addendum.md` — delivery horizons (MVP / MVP-extended / post-MVP)
+  - `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` — Phase 10 plan
+  - `docs/optihub_post_mvp_knowledge_engine_roadmap.md` — post-MVP roadmap
 - Use `.planning/README.md` only when historical migration context is needed.
 - Read `.agent/CONTINUITY.md` at the start of every task to recover current decisions and progress.
 

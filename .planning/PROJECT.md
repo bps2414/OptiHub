@@ -1,12 +1,29 @@
 # OptiHub
 
+> **⚠️ PRODUCT DIRECTION NOTICE — Read before planning new phases**
+>
+> The product direction was revised after Phase 3. OptiHub is no longer only a tools hub.
+> It is now a **guided optimization orchestrator** that combines native game config, external tools,
+> curated knowledge, and safe rollback into one flow.
+>
+> Before interpreting requirements or designing new features, read:
+> - `docs/optihub_mvp_revised_vision.md` — revised north star, product shape, support levels, source policy
+> - `docs/optihub_roadmap_addendum.md` — revised delivery horizons (MVP / MVP-extended / post-MVP)
+> - `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` — Phase 10 (MVP-extended)
+> - `docs/optihub_post_mvp_knowledge_engine_roadmap.md` — post-MVP knowledge engine plan
+>
+> The sections below remain valid as historical context for completed phases and active requirements,
+> but they do not reflect the full revised direction.
+
 ## What This Is
 
-OptiHub is a Windows-first, offline-first desktop application that centralizes PC game optimization into a single premium hub. It detects installed games and hardware, recommends the best optimization tools per game, offers automatic presets (Quality/Balanced/Performance), and applies reversible configurations with user confirmation. The UI targets a modern gamer launcher aesthetic — dark premium, sidebar-based, beautiful and accessible.
+OptiHub is a Windows-first, offline-first desktop application that centralizes PC game optimization into a single premium hub. It detects installed games and hardware, determines the safest and most effective optimization path (native config, external tools, or a combined approach), and applies reversible configurations with user confirmation. The UI targets a modern gamer launcher aesthetic — dark premium, sidebar-based, beautiful and accessible.
+
+**Revised North Star (post-Phase 3 direction):** Help the user find and apply the best optimization path for any detected game by combining native config, external tools, curated knowledge, and safe rollback.
 
 ## Core Value
 
-The user can optimize any detected game with one guided flow — see what tool to use, pick a preset, apply it safely, and undo it anytime — without needing to understand the fragmented optimization ecosystem.
+The user can optimize any detected game with one guided flow — understand the best path for their game and hardware, apply it safely with a preview, and undo it anytime — without needing to understand the fragmented optimization ecosystem.
 
 ## Requirements
 
@@ -134,4 +151,4 @@ After any phase completion or task that changes user-facing functionality:
 See `.planning/CONVENTIONS.md` for the full README sync policy and checklist.
 
 ---
-*Last updated: 2026-04-03 — Phase 3 game detection complete and docs synced*
+*Last updated: 2026-04-04 — Product direction revised to guided optimization orchestrator; see `docs/optihub_mvp_revised_vision.md`*

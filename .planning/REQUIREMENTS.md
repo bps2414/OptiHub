@@ -1,7 +1,15 @@
 # Requirements: OptiHub
 
 **Defined:** 2026-04-03
-**Core Value:** The user can optimize any detected game with one guided flow — see what tool to use, pick a preset, apply it safely, and undo it anytime — without needing to understand the fragmented optimization ecosystem.
+**Last revised:** 2026-04-04 — product direction expanded to guided optimization orchestrator
+
+> **⚠️ DIRECTION NOTICE:** The product is no longer only a tools hub. Before adding new requirements,
+> read `docs/optihub_mvp_revised_vision.md` and `docs/optihub_roadmap_addendum.md`.
+> Native config support (Phase 10) is MVP-extended, not post-MVP.
+> PCGamingWiki is now a secondary factual/hint source in the active product, not v2.
+> Reddit ingestion and Discord scraping remain out of scope.
+
+**Core Value:** Help the user find and apply the best optimization path for any detected game by combining native config, external tools, curated knowledge, and safe rollback.
 
 ## v1 Requirements
 
@@ -40,11 +48,17 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Recommendations
 
-- [ ] **RECO-01**: User can see which optimization tool is recommended for each game
+- [ ] **RECO-01**: User can see which optimization path is recommended for each game (native config, external tool, combined, or no safe recommendation)
 - [ ] **RECO-02**: Each recommendation has a confidence/risk level (Safe/Limited/Experimental)
 - [ ] **RECO-03**: Each recommendation includes a user-friendly explanation of why
 - [ ] **RECO-04**: Recommendations consider user's hardware (GPU vendor, VRAM, etc.)
-- [ ] **RECO-05**: App can display "no safe recommendation available" when no tool is confidently compatible, instead of forcing a recommendation
+- [ ] **RECO-05**: App can display "no safe recommendation available" when no path is confidently compatible, instead of forcing a recommendation
+- [ ] **RECO-06**: Recommendation engine can choose between native config, external tool, combined path, or no safe recommendation
+
+### Knowledge Sources
+
+- [ ] **KNOW-01**: App treats PCGamingWiki as a secondary factual/hint source for game compatibility and config hints (not primary, not auto-promoted)
+- [ ] **KNOW-02**: App does not ingest Reddit or Discord as a data source in the current product
 
 ### Presets
 
@@ -81,6 +95,24 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **COMP-03**: App documents compliance policy for all third-party tool integrations
 - [ ] **COMP-04**: App clearly marks third-party tools as external integrations with visible official source and credits in the UI
 
+## v1-extended Requirements (Phase 10 — MVP-extended)
+
+These requirements belong to Phase 10 (Game Config Profiles & Safe Apply), the first MVP-extended phase.
+They are in-scope product work, not post-MVP speculation.
+See `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` for full specification.
+
+### Native Game Config Support
+
+- [ ] **NCFG-01**: App can detect the engine or config family for supported games (starting with Unreal Engine)
+- [ ] **NCFG-02**: App can discover config file paths for supported families (`Engine.ini`, `GameUserSettings.ini` for Unreal)
+- [ ] **NCFG-03**: App can parse and propose changes to supported config formats safely
+- [ ] **NCFG-04**: User can preview exact config changes before any file is modified
+- [ ] **NCFG-05**: Each proposed config change carries a risk classification (Safe/Limited/Experimental)
+- [ ] **NCFG-06**: App creates a backup before writing any config file
+- [ ] **NCFG-07**: User can restore/rollback any config change made by the app
+- [ ] **NCFG-08**: App blocks apply when confidence in discovery or parsing is insufficient
+- [ ] **NCFG-09**: Native config support does not enable silent apply or unsourced auto-promotion
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -92,7 +124,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Data Integration
 
-- **PCGW-01**: PCGamingWiki integration for compatibility data and known fixes per game
+- ~~**PCGW-01**: PCGamingWiki integration for compatibility data and known fixes per game~~ — *Promoted to v1: now KNOW-01 (Phase 6/10 scope). PCGamingWiki enters before Reddit as a secondary factual/hint source.*
 
 ### Advanced Features
 
@@ -184,4 +216,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-03*
-*Last updated: 2026-04-03 after Phase 3 game detection completion*
+*Last updated: 2026-04-04 — direction revised; PCGW-01 promoted to v1 as KNOW-01; NCFG-01–09 added for Phase 10 (MVP-extended); RECO-06 added; direction notice added to prevent planning against obsolete assumptions*

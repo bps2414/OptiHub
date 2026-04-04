@@ -21,6 +21,24 @@ The migration from GSD to OpenSpec used these repository sources as canonical le
 
 Supporting legacy evidence remains under `.planning/phases/` and `.planning/research/`.
 
+## Product direction docs
+
+The product direction was revised after Phase 3. The following `docs/` files are the authoritative description of what OptiHub is building and why. Read them before proposing new changes:
+
+| File | Purpose |
+|------|---------|
+| `docs/optihub_mvp_revised_vision.md` | Revised north star, product shape, support levels, source policy |
+| `docs/optihub_roadmap_addendum.md` | Revised delivery horizons: MVP, MVP-extended, post-MVP |
+| `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` | Phase 10 planning doc (MVP-extended, native config) |
+| `docs/optihub_post_mvp_knowledge_engine_roadmap.md` | Post-MVP knowledge engine roadmap |
+
+Key decisions reflected there:
+- Native config support (Unreal first) is MVP-extended, not post-MVP.
+- PCGamingWiki is a secondary factual/hint source in the active product.
+- Reddit ingestion and Discord scraping are out of scope.
+- Lossless Scaling remains detection-only (Steam ownership).
+- OptiScaler is the first deep orchestration path.
+
 ## Capability mapping
 
 ### Requirement groups to capabilities
@@ -51,6 +69,7 @@ Supporting legacy evidence remains under `.planning/phases/` and `.planning/rese
 | Phase 7: Preset System | `preset-system` |
 | Phase 8: Apply & Restore | `apply-restore` |
 | Phase 9: Compliance, Credits & Polish | `compliance-credits` |
+| Phase 10: Game Config Profiles & Safe Apply *(MVP-extended)* | `game-config-native` *(new capability, not yet in specs/)* |
 | Legacy planning workflow rules | `planning-governance` |
 
 ## Traceability policy

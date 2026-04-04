@@ -1,8 +1,21 @@
 # Roadmap: OptiHub
 
+> **⚠️ PRODUCT DIRECTION REVISED — See updated planning docs**
+>
+> The roadmap below covers Phases 1–9 (original MVP). After Phase 3, the product direction expanded:
+> the app is now a **guided optimization orchestrator**, not only a tools hub.
+>
+> Active roadmap guidance is in:
+> - `docs/optihub_roadmap_addendum.md` — revised horizons (MVP / MVP-extended / post-MVP)
+> - `docs/optihub_mvp_revised_vision.md` — revised north star and product shape
+> - `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` — Phase 10 (MVP-extended, native config support)
+> - `docs/optihub_post_mvp_knowledge_engine_roadmap.md` — post-MVP knowledge engine
+
 ## Overview
 
 OptiHub's MVP is built in 9 phases following a dependency-driven order: foundation first, then detection layers (hardware → games → tools), then intelligence layers (recommendations → presets), then the critical apply/restore system, and finally integration and polish. Each phase delivers a coherent, testable increment. The goal is a fully functional optimization hub that detects, recommends, applies, and restores — with safety and compliance built in from the start.
+
+**Note on Phase 10 (MVP-extended):** After Phases 1–9, Phase 10 (Game Config Profiles & Safe Apply) extends the product to support native game configuration (starting with Unreal Engine). This is not post-MVP — it is the first MVP-extended phase. See `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md`.
 
 ## Phases
 
@@ -21,6 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 7: Preset System** - Quality/Balanced/Performance presets with hardware-aware adaptation
 - [ ] **Phase 8: Apply & Restore** - Backup engine, execution plans, config application, rollback system
 - [ ] **Phase 9: Compliance, Credits & Polish** - Credits/licenses screen, compliance policy, final UX polish
+- [ ] **Phase 10: Game Config Profiles & Safe Apply** *(MVP-extended)* - Engine/family detection, native config discovery, safe preview/apply/rollback for Unreal and other supported config families
 
 ## Phase Details
 
@@ -178,7 +192,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9. Phase 10 follows as the first MVP-extended phase.
 
 Note: Phase 2 depends only on Phase 1, while Phase 5 now depends on Phase 3 for game-aware deployment state.
 
@@ -193,3 +207,4 @@ Note: Phase 2 depends only on Phase 1, while Phase 5 now depends on Phase 3 for 
 | 7. Preset System | 0/2 | Not started | - |
 | 8. Apply & Restore | 0/3 | Not started | - |
 | 9. Compliance, Credits & Polish | 0/2 | Not started | - |
+| 10. Game Config Profiles & Safe Apply *(MVP-extended)* | 0/TBD | Not started | - |

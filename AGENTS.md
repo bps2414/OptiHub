@@ -3,9 +3,11 @@
 
 **OptiHub**
 
-OptiHub is a Windows-first, offline-first desktop application that centralizes PC game optimization into a single premium hub. It detects installed games and hardware, recommends the best optimization tools per game, offers automatic presets (Quality/Balanced/Performance), and applies reversible configurations with user confirmation. The UI targets a modern gamer launcher aesthetic — dark premium, sidebar-based, beautiful and accessible.
+OptiHub is a Windows-first, offline-first desktop application and **guided optimization orchestrator** for PC games. It detects installed games and hardware, determines the safest and most effective optimization path (native game config, external tools, or a combined approach), and applies reversible configurations with user confirmation. The UI targets a modern gamer launcher aesthetic — dark premium, sidebar-based, beautiful and accessible.
 
-**Core Value:** The user can optimize any detected game with one guided flow — see what tool to use, pick a preset, apply it safely, and undo it anytime — without needing to understand the fragmented optimization ecosystem.
+**North Star (revised post-Phase 3):** Help the user find and apply the best optimization path for any detected game by combining native config, external tools, curated knowledge, and safe rollback.
+
+**Core Value:** The user can optimize any detected game with one guided flow — understand the best path for their game and hardware, apply it safely with a preview, and undo it anytime — without needing to understand the fragmented optimization ecosystem.
 
 ### Constraints
 
@@ -19,6 +21,21 @@ OptiHub is a Windows-first, offline-first desktop application that centralizes P
 - **Safety classification**: Every recommendation must carry a risk level (safe/limited/experimental)
 - **Licensing compliance**: Every integrated project must have documented name, author, license, and source URL from day one
 <!-- GSD:project-end -->
+
+<!-- direction-notice-start -->
+> **Product direction notice:** Before planning new features or phases, read the product direction docs:
+> - `docs/optihub_mvp_revised_vision.md` — revised north star, support levels, source policy
+> - `docs/optihub_roadmap_addendum.md` — delivery horizons (MVP / MVP-extended / post-MVP)
+> - `docs/optihub_phase_10_game_config_profiles_and_safe_apply.md` — Phase 10 native config support
+> - `docs/optihub_post_mvp_knowledge_engine_roadmap.md` — post-MVP knowledge engine
+>
+> Key constraints from revised direction:
+> - Native config support (Unreal first) is MVP-extended, not post-MVP
+> - PCGamingWiki is a secondary factual/hint source in the active product
+> - Reddit ingestion and Discord scraping are out of scope
+> - Lossless Scaling: Steam detection/guidance only — never bundle or redistribute
+> - OptiScaler is the first deep orchestration path
+<!-- direction-notice-end -->
 
 <!-- GSD:stack-start source:research/STACK.md -->
 ## Technology Stack
