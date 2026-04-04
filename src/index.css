@@ -353,6 +353,83 @@ a {
   background: var(--color-bg-elevated);
 }
 
+.game-library-toolbar {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.game-library-table {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.game-library-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) minmax(180px, 0.9fr) minmax(220px, 1.4fr) minmax(96px, 0.5fr);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.game-library-row--header {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.game-library-row--header .game-library-cell {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.game-library-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.game-source-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.game-source-badge--steam {
+  background: rgba(108, 92, 231, 0.14);
+  color: var(--color-accent-secondary);
+}
+
+.game-source-badge--manual {
+  background: rgba(0, 214, 143, 0.14);
+  color: var(--color-status-safe);
+}
+
+.game-source-meta {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.game-library-empty {
+  margin-top: var(--spacing-md);
+  color: var(--color-text-secondary);
+}
+
+.manual-game-form {
+  display: grid;
+  gap: var(--spacing-sm);
+  max-width: 520px;
+}
+
 .page-card__heading {
   display: flex;
   align-items: center;

@@ -35,6 +35,31 @@ export interface HardwareSnapshot {
   display: DisplaySnapshot
 }
 
+export type GameSource = 'steam' | 'manual'
+
+export interface GameLibraryEntry {
+  id: string
+  displayName: string
+  executablePath: string | null
+  installDir: string
+  source: GameSource
+  steamAppId: number | null
+  removable: boolean
+  userAdded: boolean
+  lastSeenAt: string | null
+}
+
+export interface GameLibrarySnapshot {
+  entries: GameLibraryEntry[]
+  steamLibraryPaths: string[]
+  scannedAt: string
+}
+
+export interface ManualGameRegistrationInput {
+  displayName: string
+  executablePath: string
+}
+
 export interface AppError {
   kind: 'NotFound' | 'OperationFailed' | 'InvalidInput' | 'SystemError'
   message: string

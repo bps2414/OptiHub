@@ -52,8 +52,34 @@ export interface MessageCatalog {
         platform: string
       }
     }
-    library: PageCopy
-    games: PageCopy
+    library: PageCopy & {
+      toolbar: {
+        refresh: string
+        addGame: string
+      }
+      table: {
+        name: string
+        source: string
+        installPath: string
+        actions: string
+        remove: string
+        steam: string
+        manual: string
+        detectedViaSteam: string
+        addedManually: string
+      }
+      form: {
+        displayName: string
+        executable: string
+        save: string
+        cancel: string
+      }
+      emptyState: string
+      libraryRefreshed: string
+    }
+    games: PageCopy & {
+      managementHint: string
+    }
     optimizations: PageCopy
     tools: PageCopy
     presets: PageCopy
@@ -155,11 +181,36 @@ export const messages: Record<Locale, MessageCatalog> = {
         eyebrow: 'Library',
         title: 'Game Library',
         subtitle: 'Your detected and added games will appear here',
+        toolbar: {
+          refresh: 'Refresh library',
+          addGame: 'Add game',
+        },
+        table: {
+          name: 'Name',
+          source: 'Source',
+          installPath: 'Install path',
+          actions: 'Actions',
+          remove: 'Remove',
+          steam: 'Steam',
+          manual: 'Manual',
+          detectedViaSteam: 'Detected via Steam',
+          addedManually: 'Added manually',
+        },
+        form: {
+          displayName: 'Display name',
+          executable: 'Executable',
+          save: 'Save game',
+          cancel: 'Cancel',
+        },
+        emptyState: 'No games detected yet',
+        libraryRefreshed: 'Library refreshed',
       },
       games: {
         eyebrow: 'Games',
         title: 'Games',
-        subtitle: 'Browse and manage your game collection',
+        subtitle: 'Use Library to manage detected and manually added games in Phase 3',
+        managementHint:
+          'The management-first game flow lives in Library for this phase. Rich metadata views stay in Phase 4.',
       },
       optimizations: {
         eyebrow: 'Optimizations',
@@ -285,11 +336,36 @@ export const messages: Record<Locale, MessageCatalog> = {
         eyebrow: 'Biblioteca',
         title: 'Biblioteca de Jogos',
         subtitle: 'Seus jogos detectados e adicionados aparecerão aqui',
+        toolbar: {
+          refresh: 'Atualizar biblioteca',
+          addGame: 'Adicionar jogo',
+        },
+        table: {
+          name: 'Nome',
+          source: 'Origem',
+          installPath: 'Caminho de instalação',
+          actions: 'Ações',
+          remove: 'Remover',
+          steam: 'Steam',
+          manual: 'Manual',
+          detectedViaSteam: 'Detectado via Steam',
+          addedManually: 'Adicionado manualmente',
+        },
+        form: {
+          displayName: 'Nome de exibição',
+          executable: 'Executável',
+          save: 'Salvar jogo',
+          cancel: 'Cancelar',
+        },
+        emptyState: 'Nenhum jogo detectado ainda',
+        libraryRefreshed: 'Biblioteca atualizada',
       },
       games: {
         eyebrow: 'Jogos',
         title: 'Jogos',
-        subtitle: 'Navegue e gerencie sua coleção de jogos',
+        subtitle: 'Use a Biblioteca para gerenciar jogos detectados e adicionados manualmente na Fase 3',
+        managementHint:
+          'O fluxo principal de gestão fica em Biblioteca nesta fase. As views ricas com metadata ficam para a Fase 4.',
       },
       optimizations: {
         eyebrow: 'Otimizações',

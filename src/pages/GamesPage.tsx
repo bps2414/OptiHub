@@ -9,6 +9,7 @@ export function GamesPage() {
       <span className="page-eyebrow">{page.eyebrow}</span>
       <h1 className="page-title">{page.title}</h1>
       <p className="page-subtitle">{page.subtitle}</p>
+      <p className="page-note">{page.managementHint}</p>
     </div>
   )
 }

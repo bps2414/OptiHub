@@ -1,7 +1,14 @@
 import { invoke } from '@tauri-apps/api/core'
 
 import type { Locale } from '../i18n/locale'
-import type { AppError, HardwareSnapshot, SystemInfo } from '../types/ipc'
+import type {
+  AppError,
+  GameLibraryEntry,
+  GameLibrarySnapshot,
+  HardwareSnapshot,
+  ManualGameRegistrationInput,
+  SystemInfo,
+} from '../types/ipc'
 
 function normalizeAppError(error: unknown): AppError {
   if (typeof error === 'string') {
@@ -53,4 +60,22 @@ export async function getSystemInfo(): Promise<SystemInfo> {
 
 export async function getHardwareSnapshot(): Promise<HardwareSnapshot> {
   return tauriInvoke<HardwareSnapshot>('get_hardware_snapshot')
+}
+
+export async function getGameLibrary(): Promise<GameLibrarySnapshot> {
+  return tauriInvoke<GameLibrarySnapshot>('get_game_library')
+}
+
+export async function refreshGameLibrary(): Promise<GameLibrarySnapshot> {
+  return tauriInvoke<GameLibrarySnapshot>('refresh_game_library')
+}
+
+export async function registerManualGame(
+  input: ManualGameRegistrationInput,
+): Promise<GameLibraryEntry> {
+  return tauriInvoke<GameLibraryEntry>('register_manual_game', { input })
+}
+
+export async function removeManualGame(gameId: string): Promise<void> {
+  return tauriInvoke<void>('remove_manual_game', { gameId })
 }
