@@ -1,6 +1,7 @@
 # Continuity
 
 [PLANS]
+- 2026-04-04T00:35:04Z [CODE] Gathered Phase 4 context for `Game Library UI & Metadata`; decisions now lock `/library` as the rich browser, `/games` as the detail surface, cover-first grid default, cache-first metadata with silent refresh, and search+source+sort controls.
 - 2026-04-04T00:38:25Z [CODE] Executed Phase 3 gap-closure plan `03-03` for the remaining UAT issue; the app now emits separate Steam/manual rows with relationship metadata and is rebuilt for retest.
 - 2026-04-04T00:21:11Z [CODE] Planned Phase 3 gap closure in `03-03-PLAN.md` for the remaining UAT issue: Steam and manual entries must stay separate instead of reconciling into one effective-source row.
 - 2026-04-03T23:53:17Z [CODE] Executed Phase 3 inline across plans `03-01` and `03-02`; verification evidence came from targeted Rust `games::tests`, targeted Vitest library tests, full `pnpm test`, `pnpm lint`, `pnpm build`, full `cargo test`, and `pnpm tauri build`.
@@ -13,6 +14,7 @@
 - 2026-04-03T18:52:12Z [CODE] Executed Phase 2 inline across plans `02-01` and `02-02`; verification evidence came from targeted Vitest hardware tests, full `pnpm test`, `pnpm lint`, `pnpm build`, and full `cargo test`.
 
 [DECISIONS]
+- 2026-04-04T00:35:04Z [USER] Phase 4 should keep `Library` as the rich collection view, convert `Games` into the detail page, default to a cover-first grid with list toggle, keep cards focused on cover/name/source/platform, use cache-first metadata with silent online refresh, expose search + source filter + sorting, and allow shared metadata while keeping Steam/Manual entries visually separate.
 - 2026-04-04T00:21:11Z [USER] The remaining accepted gap for Phase 3 is that manual and Steam entries should be independent even when they point to the same install; relationship metadata is acceptable, source promotion is not.
 - 2026-04-03T23:53:17Z [CODE] Phase 3 persists only manual registrations in SQLite and reconciles Steam detections in memory by normalized install root, preserving original user-added provenance separately from effective source.
 - 2026-04-04T02:26:30Z [USER] Renamed future Phase 5 to `Tool Integration & Deployment Management`; OptiScaler is per-game deployment-aware, Special K remains primarily global, Lossless Scaling remains Steam-detect-only, and tools must expose source/channel/compliance metadata without unofficial mirrors by default.
@@ -25,6 +27,7 @@
 - 2026-04-03T18:52:12Z [CODE] Kept manual display override in the frontend hardware store for Phase 2 so detected hardware data stays backend-authored while override UX ships without a broader settings subsystem.
 
 [PROGRESS]
+- 2026-04-04T00:35:04Z [CODE] Created `.planning/phases/04-game-library-ui-metadata/04-CONTEXT.md` and `04-DISCUSSION-LOG.md` so Phase 4 is ready to move into research/planning with the new browsing/detail/cache decisions locked.
 - 2026-04-04T00:21:11Z [CODE] Updated `03-UAT.md` so the remaining Phase 3 gap is now marked `planned` and explicitly points to `03-03-PLAN.md` for execution.
 - 2026-04-04T02:26:30Z [CODE] Updated `ROADMAP.md`, `REQUIREMENTS.md`, `PROJECT.md`, supporting research docs, and created `05-CONTEXT.md` plus `05-DISCUSSION-LOG.md` for the re-scoped Phase 5 without changing Phase 3 artifacts.
 - 2026-04-04T01:51:30Z [USER] Switched the discuss-phase conversation to Portuguese and accepted the recommended refresh model: auto-scan on library open plus explicit manual refresh.
@@ -32,6 +35,7 @@
 - 2026-04-03T05:00:00Z [USER] Requested that any further Phase 1 validation be skipped; follow-up work in this turn was limited to syncing `.planning/*`, READMEs, and continuity/docs with the bilingual shell outcome.
 
 [DISCOVERIES]
+- 2026-04-04T00:35:04Z [CODE] The current codebase already has the right structural seams for Phase 4: `LibraryPage.tsx` owns the library flow, `GamesPage.tsx` is an intentional placeholder ready to become detail UI, and `games.ts` can absorb view/search/filter state without inventing a new store yet.
 - 2026-04-04T00:11:36Z [USER] UAT da Fase 3 mostrou duas lacunas de produto: refresh sem feedback visual e picker nativo sem permissão/caminho de erro explícito; ambos foram corrigidos antes do reteste.
 - 2026-04-03T23:53:17Z [CODE] Steam/manual reconciliation needed an install-root heuristic that strips common executable subdirectories like `bin`, `win64`, and `game`; using the raw parent directory of the `.exe` was not sufficient for Steam matches.
 - 2026-04-04T02:26:30Z [CODE] The old Phase 5 docs depended only on Phase 1 and assumed generic install detection, but OptiScaler's requested workflow needs Phase 3 game records to represent per-game deployment state truthfully.
@@ -45,6 +49,7 @@
 - 2026-04-03T18:52:12Z [TOOL] `wmi 0.18.4` only compiled cleanly in this workspace after downgrading `sysinfo` to `0.37.2`; `sysinfo 0.38.x` introduced a `windows_core` split that blocked the backend before the new tests ran.
 
 [OUTCOMES]
+- 2026-04-04T00:35:04Z [CODE] Phase 4 now has explicit product guidance for route ownership, browse-vs-detail information density, cache-first metadata behavior, and separate Steam/Manual rich cards that may still share related metadata.
 - 2026-04-04T00:38:25Z [CODE] The only remaining step for Phase 3 is human retest of UAT item 6 against the new separate-entry model; automated checks and desktop rebuild already passed.
 - 2026-04-04T00:21:11Z [CODE] Phase 3 now has a dedicated gap-closure execution plan focused on replacing the merged Steam/manual row model with separate entries while preserving the rest of the validated library flow.
 - 2026-04-04T00:11:36Z [CODE] Follow-up pós-UAT da Fase 3 adicionou feedback visual de refresh na Library e liberou/capturou corretamente o picker nativo de `.exe`; um novo build desktop foi gerado para reteste dos itens 3-7.
